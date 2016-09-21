@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>watch-element-resize.js &mdash; Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.2.0/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/highlight.js/9.2.0/highlight.min.js"></script>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400" rel="stylesheet">
+    <link href="//cdn.jsdelivr.net/meyer-reset/2.0/reset.min.css" rel="stylesheet">
+    <style type="text/css">
+      #code {
+        position: static;
+        top: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <a href="https://github.com/jonataswalker/watch-element-resize.js" class="link">
+        watch-element-resize.js
+      </a> &mdash; Example
+    </h1>
+    <div id="id" class="resize">
+      <h3>Hover me</h3>
+      <h5 id="size"></h5>
+    </div>
+    <div id="id2" class="resize click">
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h5 id="size2"></h5>
+    </div>
+    <div id="code" style="margin-top: 10px">
+      <pre><code class="javascript">
+        var watchResize = new WatchElementResize(['id', 'id2']);
+
+        watchResize.on('resize', function(evt) {
+          // the DOM element
+          var resized_element = evt.element.target;
+
+          // the element offset (width, height, top, left)
+          var offset = evt.element.offset;
+
+          // the window dimensions -- just in case you need
+          var window_size = evt.window;
+        });
+      </code></pre>
+    </div>
+    <div id="id3" class="resize click">
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h3>Click me</h3>
+      <h5 id="size2"></h5>
+    </div>
+    <script src="../build/scroll-watcher.min.js"></script>
+    <script src="example.js"></script>
+</body>
+</html>

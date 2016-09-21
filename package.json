@@ -1,0 +1,46 @@
+{
+  "name": "scroll-watcher",
+  "version": "0.1.0",
+  "description": "A (yet another) cross-browser, event-based, scroll watcher.",
+  "author": "Jonatas Walker",
+  "homepage": "https://github.com/jonataswalker/scroll-watcher",
+  "license": "MIT",
+  "main": "build/scroll-watcher.min.js",
+  "rollup": {
+    "entry": "src/main.js",
+    "dest": "build/scroll-watcher.js",
+    "moduleName": "ScrollWatcher"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonataswalker/scroll-watcher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonataswalker/scroll-watcher/issues"
+  },
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "eslint": "^3.5.0",
+    "eslint-config-jwalker": "^1.9.0",
+    "nodemon": "^1.10.2",
+    "rollup": "^0.36.0",
+    "rollup-plugin-buble": "^0.14.0",
+    "rollup-plugin-commonjs": "^5.0.4",
+    "rollup-plugin-json": "^2.0.2",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "uglify-js": "^2.7.3"
+  },
+  "eslintConfig": {
+    "extends": "jwalker",
+    "rules": {
+      "max-len": [2, 80, 2, { "ignoreUrls": true }],
+      "no-console": 0
+    }
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "tiny-emitter": "^1.1.0"
+  }
+}
