@@ -30,6 +30,11 @@ export default class Internal {
 
       Object.keys(this.watching).forEach((k) => {
         let item = this.watching[k];
+        let evt_data = {
+          target: item.node,
+          scrollX: this.lastXY[0],
+          scrollY: this.lastXY[1]
+        };
         let in_ = utils.isInside({
           scroll: this.lastXY,
           viewport: this.viewport,
@@ -48,21 +53,25 @@ export default class Internal {
         if (in_ && !item.entered) {
           item.entered = true;
           item.exited = false;
-          item.emitter.emit(EVENT_TYPE.ENTER);
+          item.emitter.emit(EVENT_TYPE.ENTER, evt_data);
         } else if (!in_ && item.entered && !item.exited) {
           item.exited = true;
           item.entered = false;
-          item.emitter.emit(EVENT_TYPE.EXIT);
+          item.emitter.emit(EVENT_TYPE.EXIT, {
+            target: item.node,
+            scrollX: this.lastXY[0],
+            scrollY: this.lastXY[1]
+          });
         }
 
         if (full && !item.full_entered) {
           item.full_entered = true;
           item.exited_partial = false;
-          item.emitter.emit(EVENT_TYPE.FULL_ENTER);
+          item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
         } else if (!full && item.full_entered && !item.exited_partial) {
           item.exited_partial = true;
           item.full_entered = false;
-          item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL);
+          item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL, evt_data);
         }
       });
     }

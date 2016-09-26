@@ -19,9 +19,8 @@
     "url": "https://github.com/jonataswalker/scroll-watcher/issues"
   },
   "devDependencies": {
-    "ava": "^0.16.0",
-    "eslint": "^3.5.0",
-    "eslint-config-jwalker": "^1.9.0",
+    "eslint": "^3.6.0",
+    "eslint-config-jwalker": "^1.10.0",
     "nodemon": "^1.10.2",
     "rollup": "^0.36.0",
     "rollup-plugin-buble": "^0.14.0",

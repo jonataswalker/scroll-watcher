@@ -29,6 +29,7 @@ export default class Base extends TinyEmitter {
         '@param `opt_offset` should be number or Object or undefined!');
 
     let offset;
+    const idx = ++this.counter;
     const emitter = new TinyEmitter();
     const node = utils.evaluate(element);
     utils.assert(utils.isElement(node),
@@ -42,7 +43,7 @@ export default class Base extends TinyEmitter {
     } else {
       offset = utils.mergeOptions(DEFAULT_OFFSET, opt_offset);
     }
-    Base.Internal.watching[++this.counter] = {
+    Base.Internal.watching[idx] = {
       node            : node,
       emitter         : emitter,
       offset          : offset,
@@ -53,6 +54,23 @@ export default class Base extends TinyEmitter {
       dimensions      : utils.offset(node)
     };
 
-    return emitter;
+    return {
+      target: node,
+      update: function () {
+        Base.Internal.watching[idx].dimensions = utils.offset(node);
+      },
+      once: function (eventName, callback) {
+        emitter.once(eventName, callback);
+        return this;
+      },
+      on: function (eventName, callback) {
+        emitter.on(eventName, callback);
+        return this;
+      },
+      off: function (eventName, callback) {
+        emitter.off(eventName, callback);
+        return this;
+      }
+    };
   }
 }

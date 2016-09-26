@@ -2,7 +2,7 @@
  * A (yet another) cross-browser, event-based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
  * Version: v0.1.0
- * Built: 2016-09-21T18:13:38-03:00
+ * Built: 2016-09-26T16:57:44-03:00
  */
 
 (function (global, factory) {
@@ -105,12 +105,13 @@ var utils = {
         el = element;
         break;
       case 'string':
+        element = (element[0] === '#' || element[0] === '.') ?
+            element : '#' + element;
         el = this.find(element);
         break;
       default:
         console.warn('Unknown type');
     }
-    this.assert(el, 'Can\'t evaluate: @param ' + element);
     return el;
   },
   toType: function toType(obj) {
@@ -335,6 +336,11 @@ Internal.prototype.loop = function loop () {
 
     Object.keys(this.watching).forEach(function (k) {
       var item = this$1.watching[k];
+      var evt_data = {
+        target: item.node,
+        scrollX: this$1.lastXY[0],
+        scrollY: this$1.lastXY[1]
+      };
       var in_ = utils.isInside({
         scroll: this$1.lastXY,
         viewport: this$1.viewport,
@@ -353,21 +359,25 @@ Internal.prototype.loop = function loop () {
       if (in_ && !item.entered) {
         item.entered = true;
         item.exited = false;
-        item.emitter.emit(EVENT_TYPE.ENTER);
+        item.emitter.emit(EVENT_TYPE.ENTER, evt_data);
       } else if (!in_ && item.entered && !item.exited) {
         item.exited = true;
         item.entered = false;
-        item.emitter.emit(EVENT_TYPE.EXIT);
+        item.emitter.emit(EVENT_TYPE.EXIT, {
+          target: item.node,
+          scrollX: this$1.lastXY[0],
+          scrollY: this$1.lastXY[1]
+        });
       }
 
       if (full && !item.full_entered) {
         item.full_entered = true;
         item.exited_partial = false;
-        item.emitter.emit(EVENT_TYPE.FULL_ENTER);
+        item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
       } else if (!full && item.full_entered && !item.exited_partial) {
         item.exited_partial = true;
         item.full_entered = false;
-        item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL);
+        item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL, evt_data);
       }
     });
   }
@@ -403,6 +413,7 @@ var Base = (function (TinyEmitter$$1) {
         '@param `opt_offset` should be number or Object or undefined!');
 
     var offset;
+    var idx = ++this.counter;
     var emitter = new TinyEmitter$$1();
     var node = utils.evaluate(element);
     utils.assert(utils.isElement(node),
@@ -416,7 +427,7 @@ var Base = (function (TinyEmitter$$1) {
     } else {
       offset = utils.mergeOptions(DEFAULT_OFFSET, opt_offset);
     }
-    Base.Internal.watching[++this.counter] = {
+    Base.Internal.watching[idx] = {
       node            : node,
       emitter         : emitter,
       offset          : offset,
@@ -427,7 +438,24 @@ var Base = (function (TinyEmitter$$1) {
       dimensions      : utils.offset(node)
     };
 
-    return emitter;
+    return {
+      target: node,
+      update: function () {
+        Base.Internal.watching[idx].dimensions = utils.offset(node);
+      },
+      once: function (eventName, callback) {
+        emitter.once(eventName, callback);
+        return this;
+      },
+      on: function (eventName, callback) {
+        emitter.on(eventName, callback);
+        return this;
+      },
+      off: function (eventName, callback) {
+        emitter.off(eventName, callback);
+        return this;
+      }
+    };
   };
 
   return Base;

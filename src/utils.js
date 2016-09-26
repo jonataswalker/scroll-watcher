@@ -25,12 +25,13 @@ export default {
         el = element;
         break;
       case 'string':
+        element = (element[0] === '#' || element[0] === '.') ?
+            element : '#' + element;
         el = this.find(element);
         break;
       default:
         console.warn('Unknown type');
     }
-    this.assert(el, 'Can\'t evaluate: @param ' + element);
     return el;
   },
   toType(obj) {
