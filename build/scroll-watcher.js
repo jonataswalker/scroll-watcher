@@ -2,7 +2,7 @@
  * A (yet another) cross-browser, event-based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
  * Version: v0.1.0
- * Built: 2016-09-26T16:57:44-03:00
+ * Built: 2016-09-28T16:30:45-03:00
  */
 
 (function (global, factory) {
@@ -219,21 +219,7 @@ var utils = {
     var offset = ref.offset;
     var full = ref.full;
 
-    var nodeRect = {
-      left    : node.left,
-      top     : node.top + offset.top,
-      right   : node.left + node.width,
-      bottom  : node.top + offset.bottom + node.height
-    };
-    var viewportRect = {
-      left    : scroll[0],
-      top     : scroll[1],
-      right   : scroll[0] + viewport.w,
-      bottom  : scroll[1] + viewport.h
-    };
-    return full
-        ? this.containsRectangle(viewportRect, nodeRect)
-        : this.intersectRect(nodeRect, viewportRect);
+
   },
   intersectRect: function intersectRect(rect1, rect2) {
     return rect1.left <= rect2.right
@@ -328,60 +314,71 @@ Internal.prototype.loop = function loop () {
     utils.raf.call(window, this.loopBound);
     return false;
   } else {
-    this.lastXY = utils.getScroll();
-    this.Base.emit(EVENT_TYPE.SCROLLING, {
+    var xy = utils.getScroll();
+    var scrolling_down = xy[1] > this.lastXY[1];
+    this.lastXY = xy;
+    var evt_data = {
       scrollX: this.lastXY[0],
-      scrollY: this.lastXY[1]
-    });
+      scrollY: this.lastXY[1],
+      scrollingDown: scrolling_down,
+      scrollingUp: !scrolling_down
+    };
+    this.Base.emit(EVENT_TYPE.SCROLLING, evt_data);
 
     Object.keys(this.watching).forEach(function (k) {
       var item = this$1.watching[k];
-      var evt_data = {
-        target: item.node,
-        scrollX: this$1.lastXY[0],
-        scrollY: this$1.lastXY[1]
-      };
-      var in_ = utils.isInside({
-        scroll: this$1.lastXY,
-        viewport: this$1.viewport,
-        node: item.dimensions,
-        full: false,
-        offset: item.offset
-      });
-      var full = utils.isInside({
-        scroll: this$1.lastXY,
-        viewport: this$1.viewport,
-        node: item.dimensions,
-        full: true,
-        offset: item.offset
-      });
+      this$1.recalculate(item);
+      evt_data.target = item.node;
 
-      if (in_ && !item.entered) {
-        item.entered = true;
-        item.exited = false;
+      //console.info('in: ', in_, 'id: ', item.node.id);
+      // console.info('id: ', item.node.id, 'dimensions: ', item.dimensions);
+
+      if (item.isInViewport && !item.wasInViewport) {
+        item.wasInViewport = true;
+        item.wasFullyOut = false;
         item.emitter.emit(EVENT_TYPE.ENTER, evt_data);
-      } else if (!in_ && item.entered && !item.exited) {
-        item.exited = true;
-        item.entered = false;
-        item.emitter.emit(EVENT_TYPE.EXIT, {
-          target: item.node,
-          scrollX: this$1.lastXY[0],
-          scrollY: this$1.lastXY[1]
-        });
       }
 
-      if (full && !item.full_entered) {
-        item.full_entered = true;
-        item.exited_partial = false;
-        item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
-      } else if (!full && item.full_entered && !item.exited_partial) {
-        item.exited_partial = true;
-        item.full_entered = false;
+      if (item.isFullyOut && !item.wasFullyOut) {
+        item.wasFullyOut = true;
+        item.wasInViewport = false;
+        item.emitter.emit(EVENT_TYPE.EXIT, evt_data);
+      }
+
+      if (item.isPartialOut && !item.wasPartialOut) {
+        item.wasPartialOut = true;
+        item.wasFullyInViewport = false;
         item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL, evt_data);
+      }
+
+      if (item.isFullyInViewport && !item.wasFullyInViewport) {
+        item.wasFullyInViewport = true;
+        item.wasPartialOut = false;
+        item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
       }
     });
   }
   utils.raf.call(window, this.loopBound);
+};
+
+Internal.prototype.recalculate = function recalculate (item) {
+  var node = {
+    top: item.dimensions.top + item.offset.top,
+    bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height
+  };
+  var viewport = {
+    top: this.lastXY[1],
+    bottom: this.lastXY[1] + this.viewport.h
+  };
+  item.isAboveViewport = node.top < viewport.top;
+  item.isBelowViewport = node.bottom > viewport.bottom;
+  item.isInViewport = node.top <= viewport.bottom &&
+      node.bottom >= viewport.top;
+  item.isFullyInViewport = (node.top >= viewport.top &&
+      node.bottom <= viewport.bottom) ||
+      (item.isAboveViewport && item.isBelowViewport);
+  item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport;
+  item.isFullyOut = !item.isInViewport && item.wasInViewport;
 };
 
 /**
@@ -428,19 +425,32 @@ var Base = (function (TinyEmitter$$1) {
       offset = utils.mergeOptions(DEFAULT_OFFSET, opt_offset);
     }
     Base.Internal.watching[idx] = {
-      node            : node,
-      emitter         : emitter,
-      offset          : offset,
-      entered         : false,
-      full_entered    : false,
-      exited          : false,
-      exited_partial  : false,
-      dimensions      : utils.offset(node)
+      node                : node,
+      emitter             : emitter,
+      offset              : offset,
+      dimensions          : utils.offset(node)
     };
+    reset(Base.Internal.watching[idx]);
+
+    function reset(item) {
+      item.isInViewport       = false;
+      item.wasInViewport      = false;
+      item.isAboveViewport    = false;
+      item.wasAboveViewport   = false;
+      item.isBelowViewport    = false;
+      item.wasBelowViewport   = false;
+      item.isPartialOut       = false;
+      item.wasPartialOut      = false;
+      item.isFullyOut         = false;
+      item.wasFullyOut        = false;
+      item.isFullyInViewport  = false;
+      item.wasFullyInViewport = false;
+    }
 
     return {
       target: node,
       update: function () {
+        reset(Base.Internal.watching[idx]);
         Base.Internal.watching[idx].dimensions = utils.offset(node);
       },
       once: function (eventName, callback) {

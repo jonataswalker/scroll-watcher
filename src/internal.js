@@ -22,59 +22,70 @@ export default class Internal {
       utils.raf.call(window, this.loopBound);
       return false;
     } else {
-      this.lastXY = utils.getScroll();
-      this.Base.emit(EVENT_TYPE.SCROLLING, {
+      let xy = utils.getScroll();
+      let scrolling_down = xy[1] > this.lastXY[1];
+      this.lastXY = xy;
+      let evt_data = {
         scrollX: this.lastXY[0],
-        scrollY: this.lastXY[1]
-      });
+        scrollY: this.lastXY[1],
+        scrollingDown: scrolling_down,
+        scrollingUp: !scrolling_down
+      };
+      this.Base.emit(EVENT_TYPE.SCROLLING, evt_data);
 
       Object.keys(this.watching).forEach((k) => {
         let item = this.watching[k];
-        let evt_data = {
-          target: item.node,
-          scrollX: this.lastXY[0],
-          scrollY: this.lastXY[1]
-        };
-        let in_ = utils.isInside({
-          scroll: this.lastXY,
-          viewport: this.viewport,
-          node: item.dimensions,
-          full: false,
-          offset: item.offset
-        });
-        let full = utils.isInside({
-          scroll: this.lastXY,
-          viewport: this.viewport,
-          node: item.dimensions,
-          full: true,
-          offset: item.offset
-        });
+        this.recalculate(item);
+        evt_data.target = item.node;
 
-        if (in_ && !item.entered) {
-          item.entered = true;
-          item.exited = false;
+        //console.info('in: ', in_, 'id: ', item.node.id);
+        // console.info('id: ', item.node.id, 'dimensions: ', item.dimensions);
+
+        if (item.isInViewport && !item.wasInViewport) {
+          item.wasInViewport = true;
+          item.wasFullyOut = false;
           item.emitter.emit(EVENT_TYPE.ENTER, evt_data);
-        } else if (!in_ && item.entered && !item.exited) {
-          item.exited = true;
-          item.entered = false;
-          item.emitter.emit(EVENT_TYPE.EXIT, {
-            target: item.node,
-            scrollX: this.lastXY[0],
-            scrollY: this.lastXY[1]
-          });
         }
 
-        if (full && !item.full_entered) {
-          item.full_entered = true;
-          item.exited_partial = false;
-          item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
-        } else if (!full && item.full_entered && !item.exited_partial) {
-          item.exited_partial = true;
-          item.full_entered = false;
+        if (item.isFullyOut && !item.wasFullyOut) {
+          item.wasFullyOut = true;
+          item.wasInViewport = false;
+          item.emitter.emit(EVENT_TYPE.EXIT, evt_data);
+        }
+
+        if (item.isPartialOut && !item.wasPartialOut) {
+          item.wasPartialOut = true;
+          item.wasFullyInViewport = false;
           item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL, evt_data);
+        }
+
+        if (item.isFullyInViewport && !item.wasFullyInViewport) {
+          item.wasFullyInViewport = true;
+          item.wasPartialOut = false;
+          item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
         }
       });
     }
     utils.raf.call(window, this.loopBound);
+  }
+
+  recalculate(item) {
+    const node = {
+      top: item.dimensions.top + item.offset.top,
+      bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height
+    };
+    const viewport = {
+      top: this.lastXY[1],
+      bottom: this.lastXY[1] + this.viewport.h
+    };
+    item.isAboveViewport = node.top < viewport.top;
+    item.isBelowViewport = node.bottom > viewport.bottom;
+    item.isInViewport = node.top <= viewport.bottom &&
+        node.bottom >= viewport.top;
+    item.isFullyInViewport = (node.top >= viewport.top &&
+        node.bottom <= viewport.bottom) ||
+        (item.isAboveViewport && item.isBelowViewport);
+    item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport;
+    item.isFullyOut = !item.isInViewport && item.wasInViewport;
   }
 }

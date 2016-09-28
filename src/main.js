@@ -44,19 +44,32 @@ export default class Base extends TinyEmitter {
       offset = utils.mergeOptions(DEFAULT_OFFSET, opt_offset);
     }
     Base.Internal.watching[idx] = {
-      node            : node,
-      emitter         : emitter,
-      offset          : offset,
-      entered         : false,
-      full_entered    : false,
-      exited          : false,
-      exited_partial  : false,
-      dimensions      : utils.offset(node)
+      node                : node,
+      emitter             : emitter,
+      offset              : offset,
+      dimensions          : utils.offset(node)
     };
+    reset(Base.Internal.watching[idx]);
+
+    function reset(item) {
+      item.isInViewport       = false;
+      item.wasInViewport      = false;
+      item.isAboveViewport    = false;
+      item.wasAboveViewport   = false;
+      item.isBelowViewport    = false;
+      item.wasBelowViewport   = false;
+      item.isPartialOut       = false;
+      item.wasPartialOut      = false;
+      item.isFullyOut         = false;
+      item.wasFullyOut        = false;
+      item.isFullyInViewport  = false;
+      item.wasFullyInViewport = false;
+    }
 
     return {
       target: node,
       update: function () {
+        reset(Base.Internal.watching[idx]);
         Base.Internal.watching[idx].dimensions = utils.offset(node);
       },
       once: function (eventName, callback) {

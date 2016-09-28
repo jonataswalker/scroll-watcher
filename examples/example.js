@@ -13,17 +13,20 @@ watcher.on('scrolling', function(evt) {
 [].forEach.call(document.getElementsByClassName('move'), function (each) {
 
   var rect = watcher.watch(each)
-    .on('enter', function (evt) {
+    .once('enter', function (evt) {
       evt.target.classList.add('enter');
       evt.target.classList.remove('partial-exit');
       evt.target.firstElementChild.lastElementChild.textContent = 'entered';
     })
-    .on('enter:full', function (evt) {
+    .on('exit', function (evt) {
+
+    })
+    .once('enter:full', function (evt) {
       evt.target.classList.add('fully-enter');
       evt.target.firstElementChild.lastElementChild.textContent =
         'fully entered';
     })
-    .on('exit:partial', function (evt) {
+    .once('exit:partial', function (evt) {
       evt.target.classList.add('partial-exit');
       evt.target.classList.remove('fully-enter');
       evt.target.firstElementChild.lastElementChild.textContent =

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>scroll-watcher &mdash; Personal Portfolio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="example2.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <nav data-scroll-header class="navbar navbar-default navbar-fixed-top topnavcollapse">
+        <div class="container middle">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="logo" href="#about">some logo</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li id="li-about" class="active">
+                <a data-scroll href="#about">About</a>
+              </li>
+              <li id="li-portfolio">
+                <a data-scroll href="#portfolio">Portfolio</a>
+              </li>
+              <li id="li-contact">
+                <a data-scroll href="#contact">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <div id="about">
+          <h2>Something about me</h2>
+          <div class="row center"><hr class="mod"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-8">
+                <p class="paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur gravida, nulla et posuere dictum, lacus urna lacinia lacus, in aliquet tellus ante ac dolor. Etiam dignissim sem sed posuere vehicula. Maecenas fringilla tellus quis magna pellentesque, ut molestie velit malesuada. Morbi porttitor lorem sem, vitae consequat leo fermentum id. Phasellus at massa odio. Nulla feugiat pulvinar ligula nec volutpat. Phasellus a urna et dui tempor tempor quis vel ipsum. Fusce quis sem non ipsum vehicula auctor. Etiam vel gravida magna. Cras non nunc purus. Integer porta, risus non aliquam volutpat, magna justo varius mi, vitae sollicitudin arcu eros ac turpis. Donec mattis ex sed nisl porta, et ullamcorper ligula facilisis.</p>
+                <p class="paragraph">Sed ac ex eget elit hendrerit ullamcorper. Nulla tincidunt pulvinar risus, ut tincidunt libero laoreet eu. Pellentesque consectetur sed nulla in consequat. Nam quis mi massa. Aenean gravida felis vitae erat auctor aliquam. Cras posuere blandit lacus vel fermentum. In tristique maximus tellus, quis vehicula odio placerat at. Nunc laoreet euismod arcu.</p>
+              </div>
+              <div class="col-xs-4 thumb-dir"></div>
+            </div><!-- row -->
+          </div><!-- container -->
+        </div><!-- about -->
+        <div id="portfolio">
+          <h2>Portfolio</h2>
+          <div class="row center"><hr class="mod"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-8">
+                <p class="paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur gravida, nulla et posuere dictum, lacus urna lacinia lacus, in aliquet tellus ante ac dolor. Etiam dignissim sem sed posuere vehicula. Maecenas fringilla tellus quis magna pellentesque, ut molestie velit malesuada. Morbi porttitor lorem sem, vitae consequat leo fermentum id. Phasellus at massa odio. Nulla feugiat pulvinar ligula nec volutpat. Phasellus a urna et dui tempor tempor quis vel ipsum. Fusce quis sem non ipsum vehicula auctor. Etiam vel gravida magna. Cras non nunc purus. Integer porta, risus non aliquam volutpat, magna justo varius mi, vitae sollicitudin arcu eros ac turpis. Donec mattis ex sed nisl porta, et ullamcorper ligula facilisis.</p>
+                <p class="paragraph">Sed ac ex eget elit hendrerit ullamcorper. Nulla tincidunt pulvinar risus, ut tincidunt libero laoreet eu. Pellentesque consectetur sed nulla in consequat. Nam quis mi massa. Aenean gravida felis vitae erat auctor aliquam. Cras posuere blandit lacus vel fermentum. In tristique maximus tellus, quis vehicula odio placerat at. Nunc laoreet euismod arcu.</p>
+              </div>
+              <div class="col-xs-4 thumb-dir thumb-portfolio"></div>
+            </div><!-- row -->
+          </div><!-- container -->
+        </div><!-- portfolio -->
+        <div id="contact">
+          <h2>Contact</h2>
+          <div class="row center"><hr class="mod"></div>
+          <div class="container">
+            <form class="well form-horizontal" method="post">
+            <div class="form-group">
+              <label class="col-md-4 control-label">Name</label>
+              <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-user"></i>
+                  </span>
+                  <input name="name" placeholder="Name" class="form-control" type="text">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4 control-label">E-Mail</label>
+                <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-envelope"></i>
+                  </span>
+                  <input name="email" placeholder="E-Mail Address" class="form-control" type="text">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4 control-label">Message</label>
+                <div class="col-md-4 inputGroupContainer">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-pencil"></i>
+                    </span>
+                    <textarea class="form-control" name="comment" placeholder="Anything to say?"></textarea>
+                </div>
+              </div>
+            </div>
+            <!-- Button -->
+            <div class="form-group">
+              <label class="col-md-4 control-label"></label>
+              <div class="col-md-4">
+                <button type="button" class="btn btn-warning">Send <span class="glyphicon glyphicon-send"></span></button>
+              </div>
+            </div>
+            </form>
+          </div><!-- container -->
+        </div><!-- contact -->
+      </div><!-- container -->
+    </div><!-- container-fluid -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/10.0.1/js/smooth-scroll.min.js"></script>
+    <script src="/scroll-watcher/build/scroll-watcher.min.js"></script>
+    <script src="example2.js"></script>
+  </body>
+</html>

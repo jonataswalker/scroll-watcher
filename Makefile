@@ -16,10 +16,11 @@ PROJECT_URL	:= $(call GetFromPkg,homepage)
 JS_DEBUG	:= $(ROOT_DIR)/$(call GetFromPkg,rollup.dest)
 JS_FINAL	:= $(ROOT_DIR)/$(call GetFromPkg,main)
 TMPFILE 	:= $(BUILD_DIR)/tmp
+TEST_DIR 	:= $(ROOT_DIR)/tests/spec/
+TEST_INC_FILE 	:= $(ROOT_DIR)/tests/server.js
 
 NODE_MODULES	:= ./node_modules/.bin
 
-AVA 		:= $(NODE_MODULES)/ava
 ESLINT 		:= $(NODE_MODULES)/eslint
 UGLIFYJS 	:= $(NODE_MODULES)/uglifyjs
 UGLIFYJSFLAGS 	:= --mangle --mangle-regex --screw-ie8 -c warnings=false
@@ -28,6 +29,9 @@ NODEMON 	:= $(NODE_MODULES)/nodemon
 
 ROLLUP	 	:= $(NODE_MODULES)/rollup
 ROLLUPFLAGS 	:= -c rollup.config.js
+
+CASPERJS 	:= $(NODE_MODULES)/casperjs
+CASPERJSFLAGS 	:= test $(TEST_DIR) --includes=$(TEST_INC_FILE) --ssl-protocol=any --ignore-ssl-errors=true
 
 define HEADER
 /**
@@ -89,8 +93,8 @@ publish:
 	@git push && git push origin $(NEXT_VERSION) && npm publish
 
 .PHONY: test
-test:
-	@$(AVA) --verbose tests/test.js
+test: build
+	@$(CASPERJS) $(CASPERJSFLAGS)
 
 .PHONY: build-watch
 build-watch: build watch
@@ -116,9 +120,9 @@ bundle-js:
 	@mkdir -p $(BUILD_DIR)
 	@$(ROLLUP) $(ROLLUPFLAGS)
 
-$(BUILD_DIR)/timestamps/eslint-timestamp: $(SRC_DIR)
+$(BUILD_DIR)/timestamps/eslint-timestamp: $(SRC_DIR) $(ROOT_DIR)/tests/
 	@mkdir -p $(@D)
-	@echo "Running eslint..."
+	@echo "Running eslint ..."
 	@$(ESLINT) $^
 	@touch $@
 

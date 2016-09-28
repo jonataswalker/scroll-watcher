@@ -128,21 +128,7 @@ export default {
     return window.performance.now();
   },
   isInside({ scroll, viewport, node, offset, full } = {}) {
-    const nodeRect = {
-      left    : node.left,
-      top     : node.top + offset.top,
-      right   : node.left + node.width,
-      bottom  : node.top + offset.bottom + node.height
-    };
-    const viewportRect = {
-      left    : scroll[0],
-      top     : scroll[1],
-      right   : scroll[0] + viewport.w,
-      bottom  : scroll[1] + viewport.h
-    };
-    return full
-        ? this.containsRectangle(viewportRect, nodeRect)
-        : this.intersectRect(nodeRect, viewportRect);
+
   },
   intersectRect(rect1, rect2) {
     return rect1.left <= rect2.right
