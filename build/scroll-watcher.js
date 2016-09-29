@@ -2,7 +2,7 @@
  * A (yet another) cross-browser, event-based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
  * Version: v0.1.0
- * Built: 2016-09-28T16:30:45-03:00
+ * Built: 2016-09-29T13:46:00-03:00
  */
 
 (function (global, factory) {
