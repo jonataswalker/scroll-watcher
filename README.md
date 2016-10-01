@@ -26,16 +26,16 @@ npm install scroll-watcher
 var scroll = new ScrollWatcher();
 scroll.watch('my-element')
   .on('enter', function (evt) {
-    console.log('I'm partially inside viewport');
+    console.log("I'm partially inside viewport");
   })
   .on('exit', function (evt) {
-    console.log('I'm out of viewport');
+    console.log("I'm out of viewport");
   })
   .on('enter:full', function (evt) {
-    console.log('I'm entirely within the viewport');
+    console.log("I'm entirely within the viewport");
   })
   .on('exit:partial', function (evt) {
-    console.log('I'm partially out of viewport');
+    console.log("I'm partially out of viewport");
   });
 ```
 
