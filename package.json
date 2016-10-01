@@ -1,6 +1,6 @@
 {
   "name": "scroll-watcher",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A lightweight, blazing fast, rAF based, scroll watcher.",
   "author": "Jonatas Walker",
   "homepage": "https://github.com/jonataswalker/scroll-watcher",
@@ -44,7 +44,13 @@
     }
   },
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "commit": "git add . && git commit -m \"Bump to v$npm_package_version\"",
+    "tag": "git tag -a $npm_package_version -m \"Bump to v$npm_package_version\"",
+    "push": "git push && git push origin $npm_package_version",
+    "preversion": "npm run test",
+    "version": "npm run commit",
+    "postversion": "npm run tag && npm run push && npm publish"
   },
   "dependencies": {
     "tiny-emitter": "^1.1.0"
