@@ -127,21 +127,6 @@ export default {
     }
     return window.performance.now();
   },
-  isInside({ scroll, viewport, node, offset, full } = {}) {
-
-  },
-  intersectRect(rect1, rect2) {
-    return rect1.left <= rect2.right
-        && rect2.left <= rect1.right
-        && rect1.top <= rect2.bottom
-        && rect2.top <= rect1.bottom;
-  },
-  containsRectangle(rect1, rect2) {
-    return rect2.left >= rect1.left
-        && rect2.top >= rect1.top
-        && rect2.right <= rect1.right
-        && rect2.bottom <= rect1.bottom;
-  },
   offset(element) {
     const rect = element.getBoundingClientRect();
     const docEl = document.documentElement;

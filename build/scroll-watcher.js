@@ -1,8 +1,8 @@
 /**
- * A (yet another) cross-browser, event-based, scroll watcher.
+ * A lightweight, blazing fast, rAF based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
- * Version: v0.1.0
- * Built: 2016-09-29T13:46:00-03:00
+ * Version: v0.2.0
+ * Built: 2016-10-01T10:14:36-03:00
  */
 
 (function (global, factory) {
@@ -210,28 +210,6 @@ var utils = {
       };
     }
     return window.performance.now();
-  },
-  isInside: function isInside(ref) {
-    if ( ref === void 0 ) ref = {};
-    var scroll = ref.scroll;
-    var viewport = ref.viewport;
-    var node = ref.node;
-    var offset = ref.offset;
-    var full = ref.full;
-
-
-  },
-  intersectRect: function intersectRect(rect1, rect2) {
-    return rect1.left <= rect2.right
-        && rect2.left <= rect1.right
-        && rect1.top <= rect2.bottom
-        && rect2.top <= rect1.bottom;
-  },
-  containsRectangle: function containsRectangle(rect1, rect2) {
-    return rect2.left >= rect1.left
-        && rect2.top >= rect1.top
-        && rect2.right <= rect1.right
-        && rect2.bottom <= rect1.bottom;
   },
   offset: function offset(element) {
     var rect = element.getBoundingClientRect();
