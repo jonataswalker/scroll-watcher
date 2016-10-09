@@ -1,8 +1,8 @@
 /**
  * A lightweight, blazing fast, rAF based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
- * Version: v0.2.0
- * Built: 2016-10-01T10:30:04-03:00
+ * Version: v0.2.1
+ * Built: 2016-10-09T09:46:29-03:00
  */
 
 (function (global, factory) {
