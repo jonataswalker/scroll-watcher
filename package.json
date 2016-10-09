@@ -6,6 +6,12 @@
   "homepage": "https://github.com/jonataswalker/scroll-watcher",
   "license": "MIT",
   "main": "build/scroll-watcher.min.js",
+  "keywords": [
+    "scroll",
+    "watcher",
+    "dom",
+    "monitor"
+  ],
   "rollup": {
     "entry": "src/main.js",
     "dest": "build/scroll-watcher.js",
