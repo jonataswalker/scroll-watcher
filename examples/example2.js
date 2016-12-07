@@ -3,6 +3,15 @@ smoothScroll.init({
 });
 
 var watcher = new ScrollWatcher();
+
+watcher.on('reload', function (evt) {
+  window.setTimeout(() => window.scrollBy(0, 1), 20);
+});
+
+watcher.on('scrolling', function (evt) {
+  console.info(evt);
+});
+
 var watching_els = document.querySelectorAll('#about, #portfolio, #contact');
 var menu = {
   about: document.getElementById('li-about'),
@@ -14,7 +23,7 @@ var lastActive = menu.about;
 [].forEach.call(watching_els, function (each) {
   watcher.watch(each, { top: 50, bottom: 0 })
     .on('enter', function (evt) {
-      // console.info('entered', evt.target.id);
+      console.info('entered', evt.target.id, evt);
 
       if (evt.scrollingDown) {
         lastActive.classList.remove('active');
@@ -24,13 +33,13 @@ var lastActive = menu.about;
       }
     })
     .on('exit', function (evt) {
-      // console.info('exited', evt.target.id);
+      console.info('exited', evt.target.id);
     })
     .on('exit:partial', function (evt) {
-      // console.info('partial exited', evt.target.id);
+      console.info('partial exited', evt.target.id);
     })
     .on('enter:full', function (evt) {
-      // console.info('full entered', evt.target.id);
+      console.info('full entered', evt.target.id);
 
       if (evt.scrollingUp) {
         lastActive.classList.remove('active');
