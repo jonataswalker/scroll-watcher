@@ -4,7 +4,8 @@ smoothScroll.init({
 
 var watcher = new ScrollWatcher();
 
-watcher.on('reload', function (evt) {
+watcher.on('page:load', function (evt) {
+  console.log('page:load');
   window.setTimeout(() => window.scrollBy(0, 1), 20);
 });
 
