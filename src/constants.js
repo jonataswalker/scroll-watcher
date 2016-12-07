@@ -1,4 +1,5 @@
 export const EVENT_TYPE = {
+  RELOAD        : 'reload',
   SCROLLING     : 'scrolling',
   ENTER         : 'enter',
   FULL_ENTER    : 'enter:full',
