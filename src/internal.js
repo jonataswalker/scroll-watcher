@@ -14,6 +14,7 @@ export default class Internal {
     this.viewport = utils.getViewportSize();
     this.loopBound = this.loop.bind(this);
     this.loopBound();
+    this.setListeners();
   }
 
   loop() {
@@ -37,9 +38,6 @@ export default class Internal {
         let item = this.watching[k];
         this.recalculate(item);
         evt_data.target = item.node;
-
-        //console.info('in: ', in_, 'id: ', item.node.id);
-        // console.info('id: ', item.node.id, 'dimensions: ', item.dimensions);
 
         if (item.isInViewport && !item.wasInViewport) {
           item.wasInViewport = true;
@@ -87,5 +85,29 @@ export default class Internal {
         (item.isAboveViewport && item.isBelowViewport);
     item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport;
     item.isFullyOut = !item.isInViewport && item.wasInViewport;
+  }
+
+  setListeners() {
+    const base = this.Base;
+    const xy = this.lastXY;
+    const onReadyState = function onReadyState(e) {
+      if (typeof document !== 'undefined') {
+        switch (document.readyState) {
+          case 'loading':
+          case 'interactive':
+            break;
+          case 'complete':
+            base.emit(EVENT_TYPE.PAGELOAD, {
+              scrollX: xy[0],
+              scrollY: xy[1]
+            });
+            document.removeEventListener('readystatechange', onReadyState);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    document.addEventListener('readystatechange', onReadyState, false);
   }
 }

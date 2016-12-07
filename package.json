@@ -39,9 +39,9 @@
   "eslintConfig": {
     "extends": "jwalker",
     "rules": {
-      "no-console": 0,
+      "no-console": 1,
       "no-use-before-define": 1,
-      "vars-on-top": 0
+      "vars-on-top": 1
     },
     "globals": {
       "casper": true,
