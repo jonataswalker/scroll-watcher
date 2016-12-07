@@ -97,7 +97,7 @@ export default class Internal {
           case 'interactive':
             break;
           case 'complete':
-            base.emit(EVENT_TYPE.RELOAD, {
+            base.emit(EVENT_TYPE.PAGELOAD, {
               scrollX: xy[0],
               scrollY: xy[1]
             });
