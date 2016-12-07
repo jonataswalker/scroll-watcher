@@ -1,8 +1,8 @@
 /**
  * A lightweight, blazing fast, rAF based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
- * Version: v0.2.1
- * Built: 2016-10-09T09:46:29-03:00
+ * Version: v0.4.0
+ * Built: 2016-12-07T18:07:54-02:00
  */
 
 (function (global, factory) {
@@ -35,7 +35,7 @@ E.prototype = {
       callback.apply(ctx, arguments);
     }
 
-    listener._ = callback
+    listener._ = callback;
     return this.on(name, listener, ctx);
   },
 
@@ -259,6 +259,7 @@ var utils = {
 };
 
 var EVENT_TYPE = {
+  PAGELOAD      : 'page:load',
   SCROLLING     : 'scrolling',
   ENTER         : 'enter',
   FULL_ENTER    : 'enter:full',
@@ -282,6 +283,7 @@ var Internal = function Internal(base) {
   this.viewport = utils.getViewportSize();
   this.loopBound = this.loop.bind(this);
   this.loopBound();
+  this.setListeners();
 };
 
 Internal.prototype.loop = function loop () {
@@ -307,9 +309,6 @@ Internal.prototype.loop = function loop () {
       var item = this$1.watching[k];
       this$1.recalculate(item);
       evt_data.target = item.node;
-
-      //console.info('in: ', in_, 'id: ', item.node.id);
-      // console.info('id: ', item.node.id, 'dimensions: ', item.dimensions);
 
       if (item.isInViewport && !item.wasInViewport) {
         item.wasInViewport = true;
@@ -357,6 +356,30 @@ Internal.prototype.recalculate = function recalculate (item) {
       (item.isAboveViewport && item.isBelowViewport);
   item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport;
   item.isFullyOut = !item.isInViewport && item.wasInViewport;
+};
+
+Internal.prototype.setListeners = function setListeners () {
+  var base = this.Base;
+  var xy = this.lastXY;
+  var onReadyState = function onReadyState(e) {
+    if (typeof document !== 'undefined') {
+      switch (document.readyState) {
+        case 'loading':
+        case 'interactive':
+          break;
+        case 'complete':
+          base.emit(EVENT_TYPE.PAGELOAD, {
+            scrollX: xy[0],
+            scrollY: xy[1]
+          });
+          document.removeEventListener('readystatechange', onReadyState);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+  document.addEventListener('readystatechange', onReadyState, false);
 };
 
 /**
