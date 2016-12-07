@@ -38,6 +38,13 @@ scroll.watch('my-element')
     console.log("I'm partially out of viewport");
   });
 ```
+##### Make some decision when page is loaded (or reloaded)
+```javascript
+watcher.on('page:load', function(evt) {
+  // maybe trigger a scroll?
+  window.setTimeout(() => window.scrollBy(0, 1), 20);
+});
+```
 
 ## Events `on/once/off`
 You can simply watch for scrolling action:
