@@ -30,6 +30,7 @@ export default class Base extends TinyEmitter {
         '@param `opt_offset` should be number or Object or undefined!');
 
     let offset;
+    const this_ = this;
     const idx = ++this.counter;
     const emitter = new TinyEmitter();
     const node = utils.evaluate(element);
@@ -74,15 +75,15 @@ export default class Base extends TinyEmitter {
         Base.Internal.watching[idx].dimensions = utils.offset(node);
       },
       once: function (eventName, callback) {
-        emitter.once(eventName, callback);
+        emitter.once(eventName, callback, this);
         return this;
       },
       on: function (eventName, callback) {
-        emitter.on(eventName, callback);
+        emitter.on(eventName, callback, this);
         return this;
       },
       off: function (eventName, callback) {
-        emitter.off(eventName, callback);
+        emitter.off(eventName, callback, this);
         return this;
       }
     };
