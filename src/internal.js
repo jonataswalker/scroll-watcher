@@ -14,7 +14,7 @@ export default class Internal {
     this.watching = {};
     this.viewport = utils.getViewportSize();
     this.loopBound = this.loop.bind(this);
-    raf(this.loopBound);
+    this.loopBound();
     this.setListeners();
   }
 
