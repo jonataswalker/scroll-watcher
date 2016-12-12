@@ -28,14 +28,14 @@ scroll.watch('my-element')
   .on('enter', function (evt) {
     console.log("I'm partially inside viewport");
   })
-  .on('exit', function (evt) {
-    console.log("I'm out of viewport");
-  })
   .on('enter:full', function (evt) {
     console.log("I'm entirely within the viewport");
   })
   .on('exit:partial', function (evt) {
     console.log("I'm partially out of viewport");
+  })
+  .on('exit', function (evt) {
+    console.log("I'm out of viewport");
   });
 ```
 ##### Make some decision when page is loaded (or reloaded)
@@ -46,7 +46,26 @@ watcher.on('page:load', function(evt) {
 });
 ```
 
-## Events `on/once/off`
+## Instance Methods
+
+### watch(target[, offset])
+* `target` - `{String|Element}` String or DOM node.
+* `offset` - `{Number|Object|undefined}` (optional) Element offset.
+
+###### Returns:
+  - Methods
+    - `on/once/off` - common events
+    - `update` - updates the location of the element in relation to the document
+  - Properties
+    - `target` - DOM node being watched
+
+#### windowAtBottom([offset])
+* `offset` - `{Number|undefined}` (optional) How far to offset.
+
+#### windowAtTop([offset])
+* `offset` - `{Number|undefined}` (optional) How far to offset.
+
+## Instance Events - `on/once/off`
 You can simply watch for scrolling action:
 ```javascript
 var watcher = new ScrollWatcher();

@@ -1,30 +1,25 @@
-import json from 'rollup-plugin-json';
-import buble from 'rollup-plugin-buble';
-import nodeResolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+var fs = require('fs'),
+    buble = require('rollup-plugin-buble'),
+    resolve = require('rollup-plugin-node-resolve'),
+    commonjs = require('rollup-plugin-commonjs'),
+    pkg = require('./package.json');
 
-var pkg = require('./package.json');
+var banner = fs.readFileSync('banner.js', 'utf-8')
+  .replace('${name}', pkg.name)
+  .replace('${description}', pkg.description)
+  .replace('${homepage}', pkg.homepage)
+  .replace('${version}', pkg.version)
+  .replace('${time}', new Date());
 
 export default {
   format: 'umd',
-  entry: pkg.rollup.entry,
-  dest: pkg.rollup.dest,
-  moduleName: pkg.rollup.moduleName,
+  entry: pkg.build.entry,
+  dest: pkg.build.dest,
+  moduleName: pkg.build.moduleName,
+  banner: banner,
   plugins: [
-    json({
-      exclude: [ 'node_modules/**' ]
-    }),
-    buble({
-      exclude: ['node_modules/**', '*.json']
-    }),
-    commonjs({
-      namedExports: {
-        // left-hand side can be an absolute path, a path
-        // relative to the current directory, or the name
-        // of a module in node_modules
-        'tiny-emitter': [ 'TinyEmitter' ]
-      }
-    }),
-    nodeResolve()
+    resolve({ browser: true }),
+    commonjs({ namedExports: { 'tiny-emitter': ['TinyEmitter'] }}),
+    buble()
   ]
-}
+};

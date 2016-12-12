@@ -10,6 +10,7 @@ import { DEFAULT_OFFSET } from './constants';
 export default class Base extends TinyEmitter {
 
   constructor() {
+    if (!(this instanceof Base)) return new Base();
     super();
     this.counter = 0;
     Base.Internal = new Internal(this);
@@ -85,5 +86,26 @@ export default class Base extends TinyEmitter {
         return this;
       }
     };
+  }
+
+  /**
+   * @param {Number|undefined} offset How far to offset.
+   * @return {Boolean} Whether window is scrolled to bottom
+   */
+  windowAtBottom(offset = 0) {
+    const scrolled = Base.Internal.lastXY[1];
+    const viewHeight = Base.Internal.viewport.h;
+    offset = parseInt(offset, 10);
+    return scrolled + viewHeight >= utils.getDocumentHeight() - offset;
+  }
+
+  /**
+   * @param {Number|undefined} offset How far to offset.
+   * @return {Boolean} Whether window is scrolled to top
+   */
+  windowAtTop(offset = 0) {
+    const scrolled = Base.Internal.lastXY[1];
+    offset = parseInt(offset, 10);
+    return scrolled <= offset;
   }
 }

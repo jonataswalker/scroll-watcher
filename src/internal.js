@@ -1,4 +1,5 @@
 import utils from './utils';
+import raf from 'raf';
 import { EVENT_TYPE } from './constants';
 
 /**
@@ -13,14 +14,15 @@ export default class Internal {
     this.watching = {};
     this.viewport = utils.getViewportSize();
     this.loopBound = this.loop.bind(this);
-    this.loopBound();
+    raf(this.loopBound);
     this.setListeners();
   }
 
   loop() {
+    // console.log('loop', this.lastXY.join());
     if (this.lastXY.join() === utils.getScroll().join()) {
       // Avoid calculations if not needed
-      utils.raf.call(window, this.loopBound);
+      raf(this.loopBound);
       return false;
     } else {
       let xy = utils.getScroll();
@@ -64,7 +66,7 @@ export default class Internal {
         }
       });
     }
-    utils.raf.call(window, this.loopBound);
+    raf(this.loopBound);
   }
 
   recalculate(item) {
@@ -88,8 +90,7 @@ export default class Internal {
   }
 
   setListeners() {
-    const base = this.Base;
-    const xy = this.lastXY;
+    const this_ = this;
     const onReadyState = function onReadyState(e) {
       if (typeof document !== 'undefined') {
         switch (document.readyState) {
@@ -97,9 +98,9 @@ export default class Internal {
           case 'interactive':
             break;
           case 'complete':
-            base.emit(EVENT_TYPE.PAGELOAD, {
-              scrollX: xy[0],
-              scrollY: xy[1]
+            this_.Base.emit(EVENT_TYPE.PAGELOAD, {
+              scrollX: this_.lastXY[0],
+              scrollY: this_.lastXY[1]
             });
             document.removeEventListener('readystatechange', onReadyState);
             break;
@@ -108,6 +109,10 @@ export default class Internal {
         }
       }
     };
+    const onResize = function onResize(e) {
+      this_.viewport = utils.getViewportSize();
+    };
     document.addEventListener('readystatechange', onReadyState, false);
+    window.addEventListener('resize', onResize, false);
   }
 }
