@@ -161,15 +161,5 @@ export default {
       document.documentElement.offsetHeight,
       document.documentElement.clientHeight
     );
-  },
-  raf: window.requestAnimationFrame
-      || window.mozRequestAnimationFrame
-      || window.webkitRequestAnimationFrame
-      || window.msRequestAnimationFrame,
-  caf(id) {
-    const cancel = window.cancelAnimationFrame
-      || window.webkitCancelAnimationFrame
-      || window.mozCancelAnimationFrame;
-    cancel.call(window, id);
   }
 };
