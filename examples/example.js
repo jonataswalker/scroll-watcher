@@ -1,8 +1,8 @@
 var watcher = new ScrollWatcher();
 watcher.on('page:load', function (evt) {
   window.setTimeout(() => {
-    // if (watcher.windowAtBottom()) window.scrollBy(0, -1);
-    // else window.scrollBy(0, 1);
+    if (watcher.windowAtBottom()) window.scrollBy(0, -1);
+    else window.scrollBy(0, 1);
   }, 20);
 });
 var targets = document.getElementsByClassName('move');
