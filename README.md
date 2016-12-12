@@ -1,4 +1,26 @@
 # scroll-watcher
+[![Build Status]()]()
+<p style="text-align: center;">
+  <a href="https://travis-ci.org/jonataswalker/scroll-watcher">
+    <img src="https://travis-ci.org/jonataswalker/scroll-watcher.svg?branch=master" alt="build status">
+  </a>
+  <a href="https://www.npmjs.com/package/scroll-watcher">
+    <img src="https://img.shields.io/npm/v/scroll-watcher.svg"
+      alt="npm version">
+  </a>
+  <a href="https://github.com/jonataswalker/scroll-watcher/blob/master/LICENSE.md">
+    <img src="https://img.shields.io/npm/l/scroll-watcher.svg"
+      alt="license">
+  </a>
+  <a href="https://david-dm.org/jonataswalker/scroll-watcher">
+    <img src="https://david-dm.org/jonataswalker/scroll-watcher/status.svg"
+      alt="dependency status">
+  </a>
+  <a href="https://david-dm.org/jonataswalker/scroll-watcher">
+    <img src="https://david-dm.org/jonataswalker/scroll-watcher/dev-status.svg" alt="devDependency status">
+  </a>
+</p>
+
 A lightweight, blazing fast, [rAF](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) based, scroll watcher.
 
 A more up-to-date approach to this **_scrolling watchers_** stuff. Slightly inspired by [scrollMonitor](https://github.com/stutrek/scrollMonitor).
@@ -17,7 +39,7 @@ A more up-to-date approach to this **_scrolling watchers_** stuff. Slightly insp
 Download [latest release](https://github.com/jonataswalker/scroll-watcher/releases/latest).
 
 ##### &#8594; [NPM](https://www.npmjs.com/package/scroll-watcher)
-```
+```shell
 npm install scroll-watcher
 ```
 
@@ -85,6 +107,5 @@ watcher.off('scrolling');
 ## Credits
 Thanks to [@scottcorgan](https://github.com/scottcorgan) for his great [tiny-emitter](https://github.com/scottcorgan/tiny-emitter).
 
-
 ## License
-[Unlicense](https://github.com/jonataswalker/scroll-watcher/blob/master/LICENSE)
+[MIT](https://github.com/jonataswalker/scroll-watcher/blob/master/LICENSE.md)
