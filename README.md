@@ -1,5 +1,5 @@
 # scroll-watcher
-<p style="text-align: center;">
+<p align="center">
   <a href="https://travis-ci.org/jonataswalker/scroll-watcher">
     <img src="https://travis-ci.org/jonataswalker/scroll-watcher.svg?branch=master" alt="build status">
   </a>
