@@ -11,7 +11,7 @@ smoothScroll.init({
   selectorHeader: '[data-scroll-header]'
 });
 
-watcher.on('scrolling', function(evt) {
+watcher.on('scrolling', function (evt) {
   // console.log('scrolling', evt);
 });
 
