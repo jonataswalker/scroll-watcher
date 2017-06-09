@@ -1,12 +1,12 @@
 const pkg = require('../package.json');
 const test = require('tape');
 const jsdom = require('jsdom');
-const ScrollWatcher = require('../' + pkg.build.dest);
-const doc = jsdom.jsdom();
-const body = doc.body;
-const window = doc.defaultView;
-global.window = window;
-global.document = doc;
+const ScrollWatcher = require('../' + pkg.main);
+const { JSDOM } = jsdom;
+const dom = new JSDOM();
+
+global.window = dom.window;
+global.document = dom.window.document;
 
 const event = {
   name: 'foo',
@@ -20,7 +20,7 @@ test('#on listener', assert => {
       assert.equal(res, event.count);
       assert.end();
     })
-    .catch(err => console.log(err));
+    .catch(console.error);
 });
 
 test('#once listener', assert => {
