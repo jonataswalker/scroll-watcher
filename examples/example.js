@@ -1,35 +1,34 @@
 var watcher = new ScrollWatcher();
+var targets = document.getElementsByClassName('move');
+var firstChild;
+
 watcher.on('page:load', function (evt) {
   window.setTimeout(() => {
     if (watcher.windowAtBottom()) window.scrollBy(0, -1);
     else window.scrollBy(0, 1);
   }, 20);
 });
-var targets = document.getElementsByClassName('move');
 [].forEach.call(targets, function (each) {
   var rect = watcher.watch(each)
     .on('enter', function (evt) {
-      console.log('enter');
+      firstChild = evt.target.firstElementChild;
       evt.target.classList.add('enter');
       evt.target.classList.remove('partial-exit');
-      evt.target.firstElementChild.lastElementChild.textContent =
-          'entered';
+      firstChild.lastElementChild.textContent = 'entered';
     })
     .on('exit', function (evt) {
 
     })
     .on('enter:full', function (evt) {
-      // console.log('enter:full');
+      firstChild = evt.target.firstElementChild;
       evt.target.classList.add('fully-enter');
-      evt.target.firstElementChild.lastElementChild.textContent =
-        'fully entered';
+      firstChild.lastElementChild.textContent = 'fully entered';
     })
     .on('exit:partial', function (evt) {
-      // console.log('exit:partial');
+      firstChild = evt.target.firstElementChild;
       evt.target.classList.add('partial-exit');
       evt.target.classList.remove('fully-enter');
-      evt.target.firstElementChild.lastElementChild.textContent =
-        'partial exited';
+      firstChild.lastElementChild.textContent = 'partial exited';
     });
 
 
@@ -49,13 +48,12 @@ var targets = document.getElementsByClassName('move');
         target.setAttribute('data-y', y);
       },
       onend: function (event) {
-        rect.target.firstElementChild.lastElementChild.textContent =
-            '';
+        rect.target.firstElementChild.lastElementChild.textContent = '';
         rect.target.classList.remove('enter', 'fully-enter', 'partial-exit');
         rect.update();
         window.setTimeout(function () {
-          if (watcher.windowAtBottom()) window.scrollBy(0, -1);
-          else window.scrollBy(0, 1);
+          watcher.windowAtBottom() ?
+            window.scrollBy(0, -1) : window.scrollBy(0, 1);
         }, 20);
       }
     });
