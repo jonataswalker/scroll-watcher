@@ -8,11 +8,10 @@ node_js:
 
 cache:
   bundler: true
-  yarn: true
   directories:
     - node_modules
 
-before_install:
+before_install: if [[ `npm -v` != 5* ]]; then npm i -g npm@5; fi
 
 before_script:
 
@@ -21,4 +20,3 @@ script:
 branches:
   only:
     - "master"
-    - /^greenkeeper-.*$/
