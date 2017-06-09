@@ -30,7 +30,6 @@ export default class Base extends TinyEmitter {
         '@param `opt_offset` should be number or Object or undefined!');
 
     let offset;
-    const this_ = this;
     const idx = ++this.counter;
     const emitter = new TinyEmitter();
     const node = utils.evaluate(element);

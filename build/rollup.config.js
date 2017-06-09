@@ -1,10 +1,11 @@
-var fs = require('fs'),
-    buble = require('rollup-plugin-buble'),
-    resolve = require('rollup-plugin-node-resolve'),
-    commonjs = require('rollup-plugin-commonjs'),
-    pkg = require('./package.json');
+import { readFileSync } from 'fs';
+import buble from 'rollup-plugin-buble';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
-var banner = fs.readFileSync('banner.js', 'utf-8')
+const pkg = require('../package.json');
+
+const banner = readFileSync('build/banner.js', 'utf-8')
   .replace('${name}', pkg.name)
   .replace('${description}', pkg.description)
   .replace('${homepage}', pkg.homepage)
@@ -12,11 +13,11 @@ var banner = fs.readFileSync('banner.js', 'utf-8')
   .replace('${time}', new Date());
 
 export default {
+  banner,
   format: 'umd',
   entry: pkg.build.entry,
   dest: pkg.build.dest,
   moduleName: pkg.build.moduleName,
-  banner: banner,
   plugins: [
     resolve({ browser: true }),
     commonjs({ namedExports: { 'tiny-emitter': ['TinyEmitter'] }}),

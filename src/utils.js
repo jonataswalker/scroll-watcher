@@ -84,8 +84,8 @@ export default {
    */
   mergeOptions(obj1, obj2) {
     let obj3 = {};
-    for (let attr1 in obj1) { obj3[attr1] = obj1[attr1]; }
-    for (let attr2 in obj2) { obj3[attr2] = obj2[attr2]; }
+    for (let attr1 in obj1) { obj3[attr1] = obj1[attr1] }
+    for (let attr2 in obj2) { obj3[attr2] = obj2[attr2] }
     return obj3;
   },
   isDefAndNotNull(val) {
