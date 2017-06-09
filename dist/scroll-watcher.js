@@ -1,8 +1,8 @@
 /*!
- * scroll-watcher - v0.5.0
+ * scroll-watcher - v0.6.0
  * A lightweight, blazing fast, rAF based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
- * Built: Fri Jun 09 2017 10:27:38 GMT-0300 (-03)
+ * Built: Fri Jun 09 2017 11:01:39 GMT-0300 (-03)
  */
 
 (function (global, factory) {
