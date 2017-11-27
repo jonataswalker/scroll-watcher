@@ -23,9 +23,8 @@ watcher.on('page:load', function (evt) {
 });
 
 [].forEach.call(watching_els, function (each) {
-  watcher.watch(each, { top: 50, bottom: 0 })
+  watcher.watch(each, { top: 100, bottom: 0 })
     .on('enter', function (evt) {
-      // console.info('enter', evt.target.id);
       if (evt.scrollingDown) {
         lastActive.classList.remove('active');
         menu[evt.target.id].classList.add('active');

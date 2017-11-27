@@ -2,12 +2,6 @@ var watcher = new ScrollWatcher();
 var targets = document.getElementsByClassName('move');
 var firstChild;
 
-watcher.on('page:load', function (evt) {
-  window.setTimeout(() => {
-    if (watcher.windowAtBottom()) window.scrollBy(0, -1);
-    else window.scrollBy(0, 1);
-  }, 20);
-});
 [].forEach.call(targets, function (each) {
   var rect = watcher.watch(each)
     .on('enter', function (evt) {
@@ -31,7 +25,6 @@ watcher.on('page:load', function (evt) {
       firstChild.lastElementChild.textContent = 'partial exited';
     });
 
-
   interact(each)
     .draggable({
       inertia: true,
@@ -40,8 +33,7 @@ watcher.on('page:load', function (evt) {
             x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
             y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-        target.style.webkitTransform =
-        target.style.transform =
+        target.style.webkitTransform = target.style.transform =
           'translate(' + x + 'px, ' + y + 'px)';
 
         target.setAttribute('data-x', x);
@@ -51,10 +43,6 @@ watcher.on('page:load', function (evt) {
         rect.target.firstElementChild.lastElementChild.textContent = '';
         rect.target.classList.remove('enter', 'fully-enter', 'partial-exit');
         rect.update();
-        window.setTimeout(function () {
-          watcher.windowAtBottom() ?
-            window.scrollBy(0, -1) : window.scrollBy(0, 1);
-        }, 20);
       }
     });
 });

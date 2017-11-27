@@ -1,4 +1,4 @@
-import utils from './utils';
+import { getScroll, getViewportSize } from './helpers/dom';
 import raf from 'raf';
 import { EVENT_TYPE } from './constants';
 
@@ -12,81 +12,103 @@ export default class Internal {
     this.Base = base;
     this.lastXY = [];
     this.watching = {};
-    this.viewport = utils.getViewportSize();
+    this.viewport = getViewportSize();
     this.loopBound = this.loop.bind(this);
-    this.loopBound();
+    this.runLoop();
     this.setListeners();
+    this.rafId = null;
   }
 
   loop() {
-    // console.log('loop', this.lastXY.join());
-    if (this.lastXY.join() === utils.getScroll().join()) {
+    if (this.lastXY.join() === getScroll().join()) {
       // Avoid calculations if not needed
-      raf(this.loopBound);
-      return false;
+      this.runLoop();
+      return;
     } else {
-      let xy = utils.getScroll();
-      let scrolling_down = xy[1] > this.lastXY[1];
-      this.lastXY = xy;
-      let evt_data = {
-        scrollX: this.lastXY[0],
-        scrollY: this.lastXY[1],
-        scrollingDown: scrolling_down,
-        scrollingUp: !scrolling_down
-      };
-      this.Base.emit(EVENT_TYPE.SCROLLING, evt_data);
-
-      Object.keys(this.watching).forEach((k) => {
-        let item = this.watching[k];
-        this.recalculate(item);
-        evt_data.target = item.node;
-
-        if (item.isInViewport && !item.wasInViewport) {
-          item.wasInViewport = true;
-          item.wasFullyOut = false;
-          item.emitter.emit(EVENT_TYPE.ENTER, evt_data);
-        }
-
-        if (item.isFullyOut && !item.wasFullyOut) {
-          item.wasFullyOut = true;
-          item.wasInViewport = false;
-          item.emitter.emit(EVENT_TYPE.EXIT, evt_data);
-        }
-
-        if (item.isPartialOut && !item.wasPartialOut) {
-          item.wasPartialOut = true;
-          item.wasFullyInViewport = false;
-          item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL, evt_data);
-        }
-
-        if (item.isFullyInViewport && !item.wasFullyInViewport) {
-          item.wasFullyInViewport = true;
-          item.wasPartialOut = false;
-          item.emitter.emit(EVENT_TYPE.FULL_ENTER, evt_data);
-        }
-      });
+      this.handleItems();
+      this.runLoop();
     }
-    raf(this.loopBound);
+  }
+
+  handleItems() {
+    const evtData = this.getScrollData();
+    this.Base.emit(EVENT_TYPE.SCROLLING, evtData);
+
+    Object.keys(this.watching).forEach((k) => {
+      evtData.target = this.watching[k].node;
+      this.recalculate(this.watching[k]);
+      this.fireEvents(this.watching[k], evtData);
+    });
+  }
+
+  fireEvents(item, data) {
+    if (item.isInViewport && !item.wasInViewport) {
+      item.wasInViewport = true;
+      item.wasFullyOut = false;
+      item.emitter.emit(EVENT_TYPE.ENTER, data);
+    }
+
+    if (item.isPartialOut && !item.wasPartialOut) {
+      item.wasPartialOut = true;
+      item.wasFullyInViewport = false;
+      item.emitter.emit(EVENT_TYPE.EXIT_PARTIAL, data);
+    }
+
+    if (item.isFullyOut && !item.wasFullyOut) {
+      item.wasFullyOut = true;
+      item.wasInViewport = false;
+      item.wasFullyInViewport = false;
+      item.emitter.emit(EVENT_TYPE.EXIT, data);
+    }
+
+    if (item.isFullyInViewport && !item.wasFullyInViewport) {
+      item.wasFullyInViewport = true;
+      item.wasPartialOut = false;
+      item.wasFullyOut = false;
+      item.emitter.emit(EVENT_TYPE.FULL_ENTER, data);
+    }
+  }
+
+  getScrollData() {
+    const xy = getScroll();
+    const scrollingDown = xy[1] > this.lastXY[1];
+    this.lastXY = xy;
+    return {
+      scrollX: xy[0],
+      scrollY: xy[1],
+      scrollingDown: scrollingDown,
+      scrollingUp: !scrollingDown
+    };
+  }
+
+  stopLoop() {
+    raf.cancel(this.rafId);
+  }
+
+  runLoop() {
+    this.rafId = raf(this.loopBound);
   }
 
   recalculate(item) {
-    const node = {
+    const el = {
       top: item.dimensions.top + item.offset.top,
       bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height
     };
-    const viewport = {
+
+    const vp = {
       top: this.lastXY[1],
       bottom: this.lastXY[1] + this.viewport.h
     };
-    item.isAboveViewport = node.top < viewport.top;
-    item.isBelowViewport = node.bottom > viewport.bottom;
-    item.isInViewport = node.top <= viewport.bottom &&
-        node.bottom >= viewport.top;
-    item.isFullyInViewport = (node.top >= viewport.top &&
-        node.bottom <= viewport.bottom) ||
-        (item.isAboveViewport && item.isBelowViewport);
-    item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport;
+
+    item.isAboveViewport = el.top < vp.top;
+    item.isBelowViewport = el.bottom > vp.bottom;
+    item.isInViewport = el.top <= vp.bottom && el.bottom > vp.top;
+    item.isFullyInViewport =
+      (el.top >= vp.top && el.bottom <= vp.bottom)
+      || (item.isAboveViewport && item.isBelowViewport);
     item.isFullyOut = !item.isInViewport && item.wasInViewport;
+    item.isPartialOut =
+      item.wasFullyInViewport && !item.isFullyInViewport && !item.isFullyOut;
   }
 
   setListeners() {
@@ -105,12 +127,11 @@ export default class Internal {
             document.removeEventListener('readystatechange', onReadyState);
             break;
           default:
-            break;
         }
       }
     };
     const onResize = function onResize(e) {
-      this_.viewport = utils.getViewportSize();
+      this_.viewport = getViewportSize();
     };
     document.addEventListener('readystatechange', onReadyState, false);
     window.addEventListener('resize', onResize, false);

@@ -4,19 +4,31 @@ dist: trusty
 language: node_js
 
 node_js:
-  - "6"
+  - "8"
 
 cache:
   bundler: true
   directories:
     - node_modules
 
-before_install: if [[ `npm -v` != 5* ]]; then npm i -g npm@5; fi
+addons:
+  apt:
+    sources:
+     - google-chrome
+    packages:
+     - google-chrome-stable fluxbox
+
+before_install:
+  - stty cols 80
+  - npm i -g npm@5
 
 before_script:
-
-script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
+  - fluxbox >/dev/null 2>&1 &
 
 branches:
   only:
     - "master"
+
