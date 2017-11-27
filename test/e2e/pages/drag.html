@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>scroll-watcher</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../../node_modules/reset-css/reset.css" rel="stylesheet">
+    <link href="drag.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Actual (CSS class) position:</h1>
+    <input type="text" id="actual-class">
+    <button id="btn-update">Update Watcher</button>
+    <div id="rect1" class="move">
+      <div class="inner">
+        <h3>Move me</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <script src="../../../dist/scroll-watcher.min.js"></script>
+    <script src="./drag.js"></script>
+  </body>
+</html>
