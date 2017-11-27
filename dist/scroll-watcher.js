@@ -1,8 +1,8 @@
 /*!
- * scroll-watcher - v0.6.0
+ * scroll-watcher - v1.0.0
  * A lightweight, blazing fast, rAF based, scroll watcher.
  * https://github.com/jonataswalker/scroll-watcher
- * Built: Mon Nov 27 2017 06:54:13 GMT-0200 (-02)
+ * Built: Mon Nov 27 2017 15:29:04 GMT-0200 (-02)
  */
 
 (function (global, factory) {
@@ -98,6 +98,14 @@ function assert(condition, message) {
     throw message; // Fallback
   }
 }
+
+/**
+ * @param {Element|Array<Element>} element DOM node or array of nodes.
+ * @param {String|Array<String>} classname Class or array of classes.
+ * For example: 'class1 class2' or ['class1', 'class2']
+ * @param {Number|undefined} timeout Timeout to remove a class.
+ */
+
 
 /**
  * @param {Element|Array<Element>} element DOM node or array of nodes.
@@ -302,7 +310,7 @@ var performanceNow = createCommonjsModule(function (module) {
 
 }).call(commonjsGlobal);
 
-//# sourceMappingURL=performance-now.js.map
+
 });
 
 var root = typeof window === 'undefined' ? commonjsGlobal : window;
@@ -567,6 +575,10 @@ function getProps(item) {
   };
 }
 
+/**
+ * Principal class. Will be passed as argument to others.
+ * @class Base
+ */
 var Base = (function (TinyEmitter$$1) {
   function Base() {
     if (!(this instanceof Base)) { return new Base(); }

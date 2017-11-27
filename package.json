@@ -1,6 +1,6 @@
 {
   "name": "scroll-watcher",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "A lightweight, blazing fast, rAF based, scroll watcher.",
   "author": "Jonatas Walker",
   "homepage": "https://github.com/jonataswalker/scroll-watcher",
