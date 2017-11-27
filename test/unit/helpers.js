@@ -13,7 +13,6 @@ module.exports = {
       const watcher = new ScrollWatcher();
       let count = 0;
       watcher.on(event.name, () => {
-        console.log(watcher);
         count++;
         if (count === total) resolve(count);
       });

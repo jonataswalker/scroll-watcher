@@ -37,8 +37,6 @@ let firstChild;
 });
 
 function setCssClass(target, klass) {
-  console.log('setCssClass', target.id, klass);
-
   switch (target) {
     case $('rect1'):
       $('actual-class1').value = klass;

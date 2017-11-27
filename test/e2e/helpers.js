@@ -16,7 +16,6 @@ export function drag(top) {
 export function scroll(total) {
   return ClientFunction(() => {
     return new Promise(resolve => {
-      console.log('scroll', total);
       window.scrollBy(0, total);
       window.setTimeout(resolve, 300);
     });
@@ -35,7 +34,7 @@ export const waitForWatcherEvent = ClientFunction(() => {
       if (value) {
         input.value = '';
         clearInterval(intervalID);
-        resolve(input.value);
+        resolve(value);
       }
     }, 10);
   });
@@ -46,10 +45,8 @@ export function waitForRectEvent(id) {
     return new Promise(resolve => {
       const input = document.getElementById(id);
       const intervalID = window.setInterval(() => {
-        console.log('waitForRectEvent', input.id, input.value);
         const value = input.value;
         if (value) {
-          // input.value = '';
           clearInterval(intervalID);
           resolve(input.value);
         }
