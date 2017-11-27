@@ -32,7 +32,7 @@ A more up-to-date approach to this **_scrolling watchers_** stuff. Slightly insp
 ## How to use it?
 ##### &#8594; CDN Hosted - [jsDelivr](http://www.jsdelivr.com/projects/scroll-watcher)
 ```HTML
-<script src="//cdn.jsdelivr.net/scroll-watcher/latest/scroll-watcher.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/scroll-watcher@latest/dist/scroll-watcher.min.js"></script>
 ```
 ##### &#8594; Self hosted
 Download [latest release](https://github.com/jonataswalker/scroll-watcher/releases/latest).
