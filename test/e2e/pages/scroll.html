@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>scroll-watcher</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../../node_modules/reset-css/reset.css" rel="stylesheet">
+    <link href="drag.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+      <span>#rect1 actual (CSS class) position:</span>
+      <input type="text" id="actual-class1">
+    </div>
+    <div>
+      <span>#rect2 actual (CSS class) position:</span>
+      <input type="text" id="actual-class2">
+    </div>
+    <div>
+      <span>#rect3 actual (CSS class) position:</span>
+      <input type="text" id="actual-class3">
+    </div>
+    <div>
+      <span>#rect4 actual (CSS class) position:</span>
+      <input type="text" id="actual-class4">
+    </div>
+    <div>
+      <span>#rect5 actual (CSS class) position:</span>
+      <input type="text" id="actual-class5">
+    </div>
+    <div>
+      <span>#rect6 actual (CSS class) position:</span>
+      <input type="text" id="actual-class6">
+    </div>
+
+    <div id="rect1" class="move">
+      <div class="inner">
+        <h3>Rect 1</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <div id="rect2" class="move move2">
+      <div class="inner">
+        <h3>Rect 2</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <div id="rect3" class="move move3">
+      <div class="inner">
+        <h3>Rect 3</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <div id="rect4" class="move move4">
+      <div class="inner">
+        <h3>Rect 4</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <div id="rect5" class="move move5">
+      <div class="inner">
+        <h3>Rect 5</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <div id="rect6" class="move move6">
+      <div class="inner">
+        <h3>Rect 6</h3>
+        <h5></h5>
+      </div>
+    </div>
+    <div id="empty-space"></div>
+    <script src="../../../dist/scroll-watcher.min.js"></script>
+    <script src="./scroll.js"></script>
+  </body>
+</html>
