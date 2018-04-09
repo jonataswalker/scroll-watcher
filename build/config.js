@@ -25,9 +25,9 @@ const banner = readFileSync('build/banner.js', 'utf-8')
 
 export default [
   {
-    banner,
     input: './src/main.js',
     output: {
+      banner,
       file: './dist/scroll-watcher.min.js',
       format: 'umd',
       name: 'ScrollWatcher',
@@ -42,9 +42,9 @@ export default [
     ],
   },
   {
-    banner,
     input: './src/main.js',
     output: {
+      banner,
       file: './dist/scroll-watcher.js',
       format: 'umd',
       name: 'ScrollWatcher',
