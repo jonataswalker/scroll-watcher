@@ -3,12 +3,12 @@ var watching_els = document.querySelectorAll('#about, #portfolio, #contact');
 var menu = {
   about: document.getElementById('li-about'),
   portfolio: document.getElementById('li-portfolio'),
-  contact: document.getElementById('li-contact')
+  contact: document.getElementById('li-contact'),
 };
 var lastActive = menu.about;
 
 smoothScroll.init({
-  selectorHeader: '[data-scroll-header]'
+  selectorHeader: '[data-scroll-header]',
 });
 
 watcher.on('scrolling', function (evt) {
@@ -23,7 +23,8 @@ watcher.on('page:load', function (evt) {
 });
 
 [].forEach.call(watching_els, function (each) {
-  watcher.watch(each, { top: 100, bottom: 0 })
+  watcher
+    .watch(each, { top: 100, bottom: 0 })
     .on('enter', function (evt) {
       if (evt.scrollingDown) {
         lastActive.classList.remove('active');
@@ -46,5 +47,3 @@ watcher.on('page:load', function (evt) {
       }
     });
 });
-
-

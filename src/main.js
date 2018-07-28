@@ -10,7 +10,6 @@ import { DEFAULT_OFFSET } from './constants';
  * @class Base
  */
 export default class Base extends TinyEmitter {
-
   constructor() {
     if (!(this instanceof Base)) return new Base();
 
@@ -26,14 +25,14 @@ export default class Base extends TinyEmitter {
   watch(element, opt_offset) {
     assert(
       typeof element === 'string' || isElement(element),
-      '@param `element` should be string type or DOM Element!'
+      '@param `element` should be string type or DOM Element!',
     );
 
     assert(
       typeof opt_offset === 'number' ||
         typeof opt_offset === 'object' ||
         typeof opt_offset === 'undefined',
-      '@param `opt_offset` should be number or Object or undefined!'
+      '@param `opt_offset` should be number or Object or undefined!',
     );
 
     let offsetOpt;
@@ -43,18 +42,19 @@ export default class Base extends TinyEmitter {
 
     assert(
       isElement(node),
-      `Couldn't evaluate (${element}) to a valid DOM node`
+      `Couldn't evaluate (${element}) to a valid DOM node`,
     );
 
-    offsetOpt = typeof opt_offset === 'number'
-      ? { top: opt_offset, bottom: opt_offset }
-      : mergeOptions(DEFAULT_OFFSET, opt_offset);
+    offsetOpt =
+      typeof opt_offset === 'number'
+        ? { top: opt_offset, bottom: opt_offset }
+        : mergeOptions(DEFAULT_OFFSET, opt_offset);
 
     Base.Internal.watching[idx] = {
       node,
       emitter,
       offset: offsetOpt,
-      dimensions: offset(node)
+      dimensions: offset(node),
     };
 
     resetProps(Base.Internal.watching[idx]);
@@ -87,7 +87,7 @@ export default class Base extends TinyEmitter {
       off: function (eventName, callback) {
         emitter.off(eventName, callback, this);
         return this;
-      }
+      },
     };
   }
 

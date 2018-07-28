@@ -7,7 +7,8 @@ const rect1 = document.getElementById('rect1');
 const inputClass = document.getElementById('actual-class');
 const btnUpdate = document.getElementById('btn-update');
 
-const rect = watcher.watch(rect1)
+const rect = watcher
+  .watch(rect1)
   .on('enter', () => {
     rect1.classList.remove(...all);
     rect1.classList.add(enter[0]);

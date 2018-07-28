@@ -6,7 +6,8 @@ const all = enter.concat(exit);
 let firstChild;
 
 [].forEach.call(document.getElementsByClassName('move'), each => {
-  watcher.watch(each)
+  watcher
+    .watch(each)
     .on('enter', function (evt) {
       firstChild = evt.target.firstElementChild;
       firstChild.lastElementChild.textContent = 'entered';
@@ -18,7 +19,6 @@ let firstChild;
       evt.target.classList.remove(...all);
       evt.target.classList.add('exit');
       setCssClass(evt.target, 'exit');
-
     })
     .on('enter:full', function (evt) {
       firstChild = evt.target.firstElementChild;
@@ -63,4 +63,3 @@ function setCssClass(target, klass) {
 function $(id) {
   return document.getElementById(id);
 }
-

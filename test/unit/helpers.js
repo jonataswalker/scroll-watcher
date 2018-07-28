@@ -3,12 +3,12 @@ const ScrollWatcher = require('../../dist/scroll-watcher');
 const event = {
   name: 'foo',
   count: 2,
-  data: { value: 99 }
+  data: { value: 99 },
 };
 
 module.exports = {
   event,
-  emitAndListen: (total) => {
+  emitAndListen: total => {
     return myPromise(2000, (resolve, reject) => {
       const watcher = new ScrollWatcher();
       let count = 0;
@@ -20,7 +20,7 @@ module.exports = {
         watcher.emit(event.name, event.data);
       }
     });
-  }
+  },
 };
 
 // http://stackoverflow.com/a/32461436/4640499

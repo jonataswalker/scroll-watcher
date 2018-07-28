@@ -2,9 +2,9 @@ module.exports = {
   plugins: ['jest'],
   extends: ['plugin:jest/recommended'],
   rules: {
-    'no-console': 0
+    'no-console': 0,
   },
   env: {
-    'jest/globals': true
-  }
+    'jest/globals': true,
+  },
 };
