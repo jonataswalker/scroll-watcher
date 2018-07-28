@@ -1,4 +1,3 @@
-
 export const windowSize = { w: 600, h: 400 };
 
 // from CSS

@@ -7,7 +7,6 @@ import { EVENT_TYPE } from './constants';
  * @class Internal
  */
 export default class Internal {
-
   constructor(base) {
     this.Base = base;
     this.lastXY = [];
@@ -34,7 +33,7 @@ export default class Internal {
     const evtData = this.getScrollData();
     this.Base.emit(EVENT_TYPE.SCROLLING, evtData);
 
-    Object.keys(this.watching).forEach((k) => {
+    Object.keys(this.watching).forEach(k => {
       evtData.target = this.watching[k].node;
       this.recalculate(this.watching[k]);
       this.fireEvents(this.watching[k], evtData);
@@ -77,7 +76,7 @@ export default class Internal {
       scrollX: xy[0],
       scrollY: xy[1],
       scrollingDown: scrollingDown,
-      scrollingUp: !scrollingDown
+      scrollingUp: !scrollingDown,
     };
   }
 
@@ -92,20 +91,20 @@ export default class Internal {
   recalculate(item) {
     const el = {
       top: item.dimensions.top + item.offset.top,
-      bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height
+      bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height,
     };
 
     const vp = {
       top: this.lastXY[1],
-      bottom: this.lastXY[1] + this.viewport.h
+      bottom: this.lastXY[1] + this.viewport.h,
     };
 
     item.isAboveViewport = el.top < vp.top;
     item.isBelowViewport = el.bottom > vp.bottom;
     item.isInViewport = el.top <= vp.bottom && el.bottom > vp.top;
     item.isFullyInViewport =
-      (el.top >= vp.top && el.bottom <= vp.bottom)
-      || (item.isAboveViewport && item.isBelowViewport);
+      (el.top >= vp.top && el.bottom <= vp.bottom) ||
+      (item.isAboveViewport && item.isBelowViewport);
     item.isFullyOut = !item.isInViewport && item.wasInViewport;
     item.isPartialOut =
       item.wasFullyInViewport && !item.isFullyInViewport && !item.isFullyOut;
@@ -122,7 +121,7 @@ export default class Internal {
           case 'complete':
             this_.Base.emit(EVENT_TYPE.PAGELOAD, {
               scrollX: this_.lastXY[0],
-              scrollY: this_.lastXY[1]
+              scrollY: this_.lastXY[1],
             });
             document.removeEventListener('readystatechange', onReadyState);
             break;

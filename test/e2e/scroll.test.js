@@ -1,10 +1,9 @@
 import { scroll, waitForRectEvent, clearAllClasses } from './helpers';
 import { dragClasses, dragPosition, dragSize, betweenRect } from './constants';
 
-fixture `Scrolling`
-  .page `./pages/scroll.html`;
+fixture`Scrolling`.page`./pages/scroll.html`;
 
-let amountScrolled = dragPosition.top + (dragSize.h / 2);
+let amountScrolled = dragPosition.top + dragSize.h / 2;
 let actualClass;
 
 test('#rect1', async t => {
@@ -22,7 +21,7 @@ test('#rect1', async t => {
 });
 
 test('#rect2', async t => {
-  amountScrolled += betweenRect + (dragSize.h / 4);
+  amountScrolled += betweenRect + dragSize.h / 4;
 
   await clearAllClasses();
   await scroll(amountScrolled)();
