@@ -12,7 +12,7 @@ export function drag(top) {
         window.setTimeout(resolve, 200);
       });
     },
-    { dependencies: { top, rect1 } },
+    { dependencies: { top, rect1 } }
   );
 }
 
@@ -24,7 +24,7 @@ export function scroll(total) {
         window.setTimeout(resolve, 300);
       });
     },
-    { dependencies: { total } },
+    { dependencies: { total } }
   );
 }
 
@@ -61,7 +61,7 @@ export function waitForRectEvent(id) {
         }, 20);
       });
     },
-    { dependencies: { id } },
+    { dependencies: { id } }
   );
 }
 

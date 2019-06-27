@@ -8,26 +8,26 @@ let firstChild;
 [].forEach.call(document.getElementsByClassName('move'), each => {
   watcher
     .watch(each)
-    .on('enter', function (evt) {
+    .on('enter', function(evt) {
       firstChild = evt.target.firstElementChild;
       firstChild.lastElementChild.textContent = 'entered';
       evt.target.classList.remove(...all);
       evt.target.classList.add('enter');
       setCssClass(evt.target, 'enter');
     })
-    .on('exit', function (evt) {
+    .on('exit', function(evt) {
       evt.target.classList.remove(...all);
       evt.target.classList.add('exit');
       setCssClass(evt.target, 'exit');
     })
-    .on('enter:full', function (evt) {
+    .on('enter:full', function(evt) {
       firstChild = evt.target.firstElementChild;
       firstChild.lastElementChild.textContent = 'fully entered';
       evt.target.classList.remove(...all);
       evt.target.classList.add('fully-enter');
       setCssClass(evt.target, 'fully-enter');
     })
-    .on('exit:partial', function (evt) {
+    .on('exit:partial', function(evt) {
       firstChild = evt.target.firstElementChild;
       firstChild.lastElementChild.textContent = 'partial exited';
       evt.target.classList.remove(...all);
