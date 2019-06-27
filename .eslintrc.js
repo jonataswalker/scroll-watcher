@@ -1,11 +1,8 @@
 module.exports = {
-  extends: ['jwalker'],
-  globals: {
-    ScrollWatcher: true,
-    interact: true,
-    smoothScroll: true,
-  },
+  root: true,
+  extends: ['jwalker', 'plugin:prettier/recommended'],
   rules: {
-    'no-console': 1,
+    'no-console': 0,
+    'prettier/prettier': 'error',
   },
 };

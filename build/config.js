@@ -35,8 +35,8 @@ export default [
     plugins: [
       eslint(lintOpts),
       bundleSize(),
-      resolve({ browser: true }),
-      commonjs({ namedExports: { 'tiny-emitter': ['TinyEmitter'] } }),
+      resolve(),
+      commonjs(),
       buble({ target: { ie: 11 } }),
       uglify({ output: { comments: /^!/ } }, minify),
     ],
@@ -52,8 +52,8 @@ export default [
     plugins: [
       eslint(lintOpts),
       bundleSize(),
-      resolve({ browser: true }),
-      commonjs({ namedExports: { 'tiny-emitter': ['TinyEmitter'] } }),
+      resolve(),
+      commonjs(),
       buble({ target: { ie: 11 } }),
     ],
   },

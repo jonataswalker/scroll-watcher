@@ -2,9 +2,8 @@ sudo: required
 dist: trusty
 
 language: node_js
-
 node_js:
-  - "8"
+  - "12"
 
 cache:
   bundler: true
@@ -20,7 +19,6 @@ addons:
 
 before_install:
   - stty cols 80
-  - npm i -g npm@5
 
 before_script:
   - export DISPLAY=:99.0
@@ -31,4 +29,3 @@ before_script:
 branches:
   only:
     - "master"
-

@@ -25,14 +25,14 @@ export default class Base extends TinyEmitter {
   watch(element, opt_offset) {
     assert(
       typeof element === 'string' || isElement(element),
-      '@param `element` should be string type or DOM Element!',
+      '@param `element` should be string type or DOM Element!'
     );
 
     assert(
       typeof opt_offset === 'number' ||
         typeof opt_offset === 'object' ||
         typeof opt_offset === 'undefined',
-      '@param `opt_offset` should be number or Object or undefined!',
+      '@param `opt_offset` should be number or Object or undefined!'
     );
 
     let offsetOpt;
@@ -42,7 +42,7 @@ export default class Base extends TinyEmitter {
 
     assert(
       isElement(node),
-      `Couldn't evaluate (${element}) to a valid DOM node`,
+      `Couldn't evaluate (${element}) to a valid DOM node`
     );
 
     offsetOpt =
@@ -62,7 +62,7 @@ export default class Base extends TinyEmitter {
     return {
       target: node,
       props: getProps(Base.Internal.watching[idx]),
-      update: function () {
+      update: function() {
         const item = Base.Internal.watching[idx];
         const data = Base.Internal.getScrollData();
         data.target = item.node;
@@ -76,15 +76,15 @@ export default class Base extends TinyEmitter {
         Base.Internal.runLoop();
         return this;
       },
-      once: function (eventName, callback) {
+      once: function(eventName, callback) {
         emitter.once(eventName, callback, this);
         return this;
       },
-      on: function (eventName, callback) {
+      on: function(eventName, callback) {
         emitter.on(eventName, callback, this);
         return this;
       },
-      off: function (eventName, callback) {
+      off: function(eventName, callback) {
         emitter.off(eventName, callback, this);
         return this;
       },
