@@ -15,8 +15,6 @@ addons:
 services:
   - xvfb
 
-script: npm run ci
-
 branches:
   only:
     - master
