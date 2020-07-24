@@ -8,14 +8,19 @@ const event = {
 
 module.exports = {
   event,
-  emitAndListen: total => {
+
+  emitAndListen: (total) => {
     return myPromise(2000, (resolve, reject) => {
       const watcher = new ScrollWatcher();
+
       let count = 0;
+
       watcher.on(event.name, () => {
         count++;
+
         if (count === total) resolve(count);
       });
+
       for (let i = 1; i <= total; i++) {
         watcher.emit(event.name, event.data);
       }
@@ -29,6 +34,7 @@ function myPromise(ms, callback) {
     // Set up the real work
     callback(resolve, reject);
     // Set up the timeout
-    setTimeout(() => reject('Promise timed out after ' + ms + ' ms'), ms);
+    // eslint-disable-next-line prefer-promise-reject-errors
+    setTimeout(() => reject(`Promise timed out after ${ms} ms`), ms);
   });
 }
