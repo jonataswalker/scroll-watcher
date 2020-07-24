@@ -121,13 +121,13 @@ export default function () {
       },
 
       on(eventName, callback) {
-        watchingEmitter.on(eventName, callback, this);
+        watchingEmitter.on(eventName, callback);
 
         return this;
       },
 
       off(eventName, callback) {
-        watchingEmitter.off(eventName, callback, this);
+        watchingEmitter.off(eventName, callback);
 
         return this;
       },
