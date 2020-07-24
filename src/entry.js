@@ -5,5 +5,12 @@ export default function () {
 
   initialize();
 
-  return { watch, on: emitter.on, emit: emitter.emit, windowAtBottom, windowAtTop };
+  return {
+    watch,
+    on: emitter.on,
+    off: emitter.off,
+    emit: emitter.emit,
+    windowAtBottom,
+    windowAtTop,
+  };
 }

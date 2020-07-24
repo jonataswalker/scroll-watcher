@@ -120,10 +120,6 @@ watcher.once("scrolling", function(evt) {
 watcher.off("scrolling");
 ```
 
-## Credits
-
-Thanks to [@scottcorgan](https://github.com/scottcorgan) for his great [tiny-emitter](https://github.com/scottcorgan/tiny-emitter).
-
 ## License
 
 [MIT](https://github.com/jonataswalker/scroll-watcher/blob/master/LICENSE.md)
