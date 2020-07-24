@@ -19,3 +19,6 @@ dist
 
 # eslint
 .eslintcache
+
+# vscode
+.vscode/snipsnap.code-snippets

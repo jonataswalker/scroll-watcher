@@ -1,0 +1,12 @@
+globals:
+  ScrollWatcher: readonly
+extends:
+  - plugin:testcafe/recommended
+plugins:
+  - testcafe
+rules:
+  require-atomic-updates: 0
+  import/unambiguous: 0
+  import/no-unassigned-import: 0
+  promise/catch-or-return: 0
+  promise/no-nesting: 0

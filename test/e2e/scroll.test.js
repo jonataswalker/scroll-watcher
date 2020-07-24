@@ -1,12 +1,13 @@
 import { scroll, waitForRectEvent, clearAllClasses } from './helpers';
 import { dragClasses, dragPosition, dragSize, betweenRect } from './constants';
 
+// eslint-disable-next-line no-unused-expressions
 fixture`Scrolling`.page`./pages/scroll.html`;
 
 let amountScrolled = dragPosition.top + dragSize.h / 2;
 let actualClass;
 
-test('#rect1', async t => {
+test('#rect1', async (t) => {
   await clearAllClasses();
   await scroll(amountScrolled)();
 
@@ -20,7 +21,7 @@ test('#rect1', async t => {
   await t.expect(actualClass).eql(dragClasses.fullyEnter);
 });
 
-test('#rect2', async t => {
+test('#rect2', async (t) => {
   amountScrolled += betweenRect + dragSize.h / 4;
 
   await clearAllClasses();

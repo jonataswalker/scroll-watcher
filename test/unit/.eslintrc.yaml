@@ -1,0 +1,9 @@
+extends:
+  - plugin:jest/recommended
+plugins:
+  - jest
+rules:
+  import/unambiguous: 0
+  import/no-unassigned-import: 0
+  promise/catch-or-return: 0
+  promise/no-nesting: 0

@@ -5,10 +5,11 @@ const rect1 = Selector('#rect1');
 export function drag(top) {
   return ClientFunction(
     () => {
-      return new Promise(resolve => {
-        const btn = document.getElementById('btn-update');
+      return new Promise((resolve) => {
+        const button = document.getElementById('btn-update');
+
         rect1().style.top = `${top}px`;
-        btn.click();
+        button.click();
         window.setTimeout(resolve, 200);
       });
     },
@@ -19,7 +20,7 @@ export function drag(top) {
 export function scroll(total) {
   return ClientFunction(
     () => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         window.scrollBy(0, total);
         window.setTimeout(resolve, 300);
       });
@@ -34,10 +35,11 @@ export const getViewport = ClientFunction(() => ({
 }));
 
 export const waitForWatcherEvent = ClientFunction(() => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const input = document.getElementById('actual-class');
     const intervalID = window.setInterval(() => {
       const value = input.value;
+
       if (value) {
         input.value = '';
         clearInterval(intervalID);
@@ -50,10 +52,11 @@ export const waitForWatcherEvent = ClientFunction(() => {
 export function waitForRectEvent(id) {
   return ClientFunction(
     () => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         const input = document.getElementById(id);
         const intervalID = window.setInterval(() => {
           const value = input.value;
+
           if (value) {
             clearInterval(intervalID);
             resolve(input.value);
@@ -66,7 +69,7 @@ export function waitForRectEvent(id) {
 }
 
 export const clearAllClasses = ClientFunction(() => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     [
       'actual-class1',
       'actual-class2',
@@ -74,7 +77,7 @@ export const clearAllClasses = ClientFunction(() => {
       'actual-class4',
       'actual-class5',
       'actual-class6',
-    ].forEach(id => {
+    ].forEach((id) => {
       document.getElementById(id).value = '';
     });
     resolve();

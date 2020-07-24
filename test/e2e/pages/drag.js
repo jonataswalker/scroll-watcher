@@ -5,7 +5,7 @@ const all = enter.concat(exit);
 
 const rect1 = document.getElementById('rect1');
 const inputClass = document.getElementById('actual-class');
-const btnUpdate = document.getElementById('btn-update');
+const buttonUpdate = document.getElementById('btn-update');
 
 const rect = watcher
   .watch(rect1)
@@ -30,6 +30,6 @@ const rect = watcher
     inputClass.value = exit[1];
   });
 
-btnUpdate.addEventListener('click', () => {
+buttonUpdate.addEventListener('click', () => {
   rect.update();
 });

@@ -1,12 +1,14 @@
 import { Selector } from 'testcafe';
+
 import { dragClasses, dragPosition, dragSize } from './constants';
 import { drag, waitForWatcherEvent, getViewport } from './helpers';
 
 const rect1 = Selector('#rect1');
 
+// eslint-disable-next-line no-unused-expressions
 fixture`Dragging`.page`./pages/drag.html`;
 
-test('Out of Viewport', async t => {
+test('Out of Viewport', async (t) => {
   const viewport = await getViewport();
   const outOfViewport = viewport.h + dragPosition.top + dragSize.h;
 
@@ -24,7 +26,7 @@ test('Out of Viewport', async t => {
     .notOk();
 });
 
-test('Fully enter in Viewport', async t => {
+test('Fully enter in Viewport', async (t) => {
   await drag(100)();
   await t
     .expect(waitForWatcherEvent())
@@ -37,7 +39,7 @@ test('Fully enter in Viewport', async t => {
     .notOk();
 });
 
-test('Partial exit', async t => {
+test('Partial exit', async (t) => {
   const viewport = await getViewport();
   const partialExit = viewport.h - dragSize.h / 2;
 
@@ -53,7 +55,7 @@ test('Partial exit', async t => {
     .notOk();
 });
 
-test('Partial enter in Viewport', async t => {
+test('Partial enter in Viewport', async (t) => {
   const viewport = await getViewport();
   const outOfViewport = viewport.h + dragPosition.top + dragSize.h;
   const partialEnter = viewport.h - dragSize.h / 2;
