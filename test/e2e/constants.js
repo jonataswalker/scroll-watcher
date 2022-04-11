@@ -9,8 +9,8 @@ export const dragPosition = { top: 100, left: 100 };
 export const betweenRect = 200;
 
 export const dragClasses = {
-  enter: 'enter',
-  partialExit: 'partial-exit',
-  fullyEnter: 'fully-enter',
-  exit: 'exit',
+    enter: 'enter',
+    partialExit: 'partial-exit',
+    fullyEnter: 'fully-enter',
+    exit: 'exit',
 };

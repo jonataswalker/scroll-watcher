@@ -1,224 +1,224 @@
 import {
-  assert,
-  resetProperties,
-  resetPartialProperties,
-  getProperties,
-  fireEvents,
+    assert,
+    resetProperties,
+    resetPartialProperties,
+    getProperties,
+    fireEvents,
 } from './helpers/mix.js';
 import {
-  isElement,
-  getOffset,
-  getDocumentHeight,
-  getScroll,
-  getViewportSize,
+    isElement,
+    getOffset,
+    getDocumentHeight,
+    getScroll,
+    getViewportSize,
 } from './helpers/dom.js';
 import { DEFAULT_OFFSET, EVENT_TYPE } from './constants.js';
 import Mitt from './emitter.js';
 
 export default function () {
-  const watcher = {
-    counter: 0,
-    requestAnimationId: null,
-    lastXY: [],
-    watching: {},
-    viewport: getViewportSize(),
-    props: null,
-  };
-
-  const emitter = new Mitt();
-
-  function initialize() {
-    handleAnimationFrame();
-
-    const onReadyState = () => {
-      if (typeof document !== 'undefined') {
-        switch (document.readyState) {
-          case 'loading':
-          case 'interactive':
-            break;
-          case 'complete':
-            emitter.emit(EVENT_TYPE.PAGELOAD, {
-              scrollX: watcher.lastXY[0],
-              scrollY: watcher.lastXY[1],
-            });
-            document.removeEventListener('readystatechange', onReadyState);
-
-            break;
-
-          default:
-        }
-      }
+    const watcher = {
+        counter: 0,
+        requestAnimationId: null,
+        lastXY: [],
+        watching: {},
+        viewport: getViewportSize(),
+        props: null,
     };
 
-    document.addEventListener('readystatechange', onReadyState, false);
-    window.addEventListener(
-      'resize',
-      () => {
-        watcher.viewport = getViewportSize();
-      },
-      false
-    );
-  }
+    const emitter = new Mitt();
 
-  function watch(element, initOffset) {
-    const node = isElement(element) ? element : document.querySelector(element);
-
-    assert(isElement(node), "Couldn't find target in DOM");
-    assert(
-      typeof initOffset === 'number' ||
-        typeof initOffset === 'object' ||
-        typeof initOffset === 'undefined',
-      '@param `initOffset` should be number or Object or undefined!'
-    );
-
-    const optionsOffset =
-      typeof initOffset === 'number'
-        ? { top: initOffset, bottom: initOffset }
-        : Object.assign(DEFAULT_OFFSET, initOffset);
-
-    const watchingEmitter = new Mitt();
-    const watching = {
-      node,
-      offset: optionsOffset,
-      dimensions: getOffset(node),
-      emitter: watchingEmitter,
-    };
-
-    watcher.counter += 1;
-    watcher.watching[watcher.counter] = watching;
-    resetProperties(watching);
-
-    return {
-      target: node,
-      props: getProperties(watching),
-
-      update() {
-        const data = getScrollData();
-
-        data.target = watching.node;
-        window.cancelAnimationFrame(watcher.requestAnimationId);
-        resetPartialProperties(watching);
-
-        watching.dimensions = getOffset(node);
-        recalculate(watching);
-
-        watcher.props = getProperties(watching);
-        fireEvents(watching, data);
+    function initialize() {
         handleAnimationFrame();
 
-        return this;
-      },
+        const onReadyState = () => {
+            if (typeof document !== 'undefined') {
+                switch (document.readyState) {
+                    case 'loading':
+                    case 'interactive':
+                        break;
+                    case 'complete':
+                        emitter.emit(EVENT_TYPE.PAGELOAD, {
+                            scrollX: watcher.lastXY[0],
+                            scrollY: watcher.lastXY[1],
+                        });
+                        document.removeEventListener('readystatechange', onReadyState);
 
-      once(eventName, callback) {
-        const wrappedHandler = (evt) => {
-          callback(evt);
-          watchingEmitter.off(eventName, wrappedHandler);
+                        break;
+
+                    default:
+                }
+            }
         };
 
-        watchingEmitter.on(eventName, wrappedHandler);
+        document.addEventListener('readystatechange', onReadyState, false);
+        window.addEventListener(
+            'resize',
+            () => {
+                watcher.viewport = getViewportSize();
+            },
+            false
+        );
+    }
 
-        return this;
-      },
+    function watch(element, initOffset) {
+        const node = isElement(element) ? element : document.querySelector(element);
 
-      on(eventName, callback) {
-        watchingEmitter.on(eventName, callback);
+        assert(isElement(node), "Couldn't find target in DOM");
+        assert(
+            typeof initOffset === 'number' ||
+                typeof initOffset === 'object' ||
+                typeof initOffset === 'undefined',
+            '@param `initOffset` should be number or Object or undefined!'
+        );
 
-        return this;
-      },
+        const optionsOffset =
+            typeof initOffset === 'number'
+                ? { top: initOffset, bottom: initOffset }
+                : Object.assign(DEFAULT_OFFSET, initOffset);
 
-      off(eventName, callback) {
-        watchingEmitter.off(eventName, callback);
+        const watchingEmitter = new Mitt();
+        const watching = {
+            node,
+            offset: optionsOffset,
+            dimensions: getOffset(node),
+            emitter: watchingEmitter,
+        };
 
-        return this;
-      },
-    };
-  }
+        watcher.counter += 1;
+        watcher.watching[watcher.counter] = watching;
+        resetProperties(watching);
 
-  function getScrollData() {
-    const xy = getScroll();
-    const scrollingDown = xy[1] > watcher.lastXY[1];
+        return {
+            target: node,
+            props: getProperties(watching),
 
-    watcher.lastXY = xy;
+            update() {
+                const data = getScrollData();
 
-    return {
-      scrollX: xy[0],
-      scrollY: xy[1],
-      scrollingDown,
-      scrollingUp: !scrollingDown,
-    };
-  }
+                data.target = watching.node;
+                window.cancelAnimationFrame(watcher.requestAnimationId);
+                resetPartialProperties(watching);
 
-  function recalculate(item) {
-    const el = {
-      top: item.dimensions.top + item.offset.top,
-      bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height,
-    };
+                watching.dimensions = getOffset(node);
+                recalculate(watching);
 
-    const vp = {
-      top: watcher.lastXY[1],
-      bottom: watcher.lastXY[1] + watcher.viewport.h,
-    };
+                watcher.props = getProperties(watching);
+                fireEvents(watching, data);
+                handleAnimationFrame();
 
-    item.isAboveViewport = el.top < vp.top;
-    item.isBelowViewport = el.bottom > vp.bottom;
-    item.isInViewport = el.top <= vp.bottom && el.bottom > vp.top;
-    item.isFullyInViewport =
-      (el.top >= vp.top && el.bottom <= vp.bottom) ||
-      (item.isAboveViewport && item.isBelowViewport);
-    item.isFullyOut = !item.isInViewport && item.wasInViewport;
-    item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport && !item.isFullyOut;
-  }
+                return this;
+            },
 
-  function handleAnimationFrame() {
-    let requestId;
+            once(eventName, callback) {
+                const wrappedHandler = (evt) => {
+                    callback(evt);
+                    watchingEmitter.off(eventName, wrappedHandler);
+                };
 
-    const tick = () => {
-      const changed = watcher.lastXY.join() !== getScroll().join();
+                watchingEmitter.on(eventName, wrappedHandler);
 
-      if (changed) {
-        const evtData = getScrollData();
+                return this;
+            },
 
-        emitter.emit(EVENT_TYPE.SCROLLING, evtData);
+            on(eventName, callback) {
+                watchingEmitter.on(eventName, callback);
 
-        Object.keys(watcher.watching).forEach((key) => {
-          evtData.target = watcher.watching[key].node;
-          recalculate(watcher.watching[key]);
-          fireEvents(watcher.watching[key], evtData);
-        });
-      }
+                return this;
+            },
 
-      requestId = window.requestAnimationFrame(tick);
-    };
+            off(eventName, callback) {
+                watchingEmitter.off(eventName, callback);
 
-    requestId = window.requestAnimationFrame(tick);
+                return this;
+            },
+        };
+    }
 
-    return requestId;
-  }
+    function getScrollData() {
+        const xy = getScroll();
+        const scrollingDown = xy[1] > watcher.lastXY[1];
 
-  /**
-   * @param {Number|undefined} offset How far to offset.
-   * @return {Boolean} Whether window is scrolled to bottom
-   */
-  function windowAtBottom(offset = 0) {
-    const scrolled = watcher.lastXY[1];
-    const viewHeight = watcher.viewport.h;
+        watcher.lastXY = xy;
 
-    // eslint-disable-next-line no-param-reassign
-    offset = Number.parseInt(offset, 10);
+        return {
+            scrollX: xy[0],
+            scrollY: xy[1],
+            scrollingDown,
+            scrollingUp: !scrollingDown,
+        };
+    }
 
-    return scrolled + viewHeight >= getDocumentHeight() - offset;
-  }
+    function recalculate(item) {
+        const el = {
+            top: item.dimensions.top + item.offset.top,
+            bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height,
+        };
 
-  /**
-   * @param {Number|undefined} offset How far to offset.
-   * @return {Boolean} Whether window is scrolled to top
-   */
-  function windowAtTop(offset = 0) {
-    // eslint-disable-next-line no-param-reassign
-    offset = Number.parseInt(offset, 10);
+        const vp = {
+            top: watcher.lastXY[1],
+            bottom: watcher.lastXY[1] + watcher.viewport.h,
+        };
 
-    return watcher.lastXY[1] <= offset;
-  }
+        item.isAboveViewport = el.top < vp.top;
+        item.isBelowViewport = el.bottom > vp.bottom;
+        item.isInViewport = el.top <= vp.bottom && el.bottom > vp.top;
+        item.isFullyInViewport =
+            (el.top >= vp.top && el.bottom <= vp.bottom) ||
+            (item.isAboveViewport && item.isBelowViewport);
+        item.isFullyOut = !item.isInViewport && item.wasInViewport;
+        item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport && !item.isFullyOut;
+    }
 
-  return { initialize, watch, emitter, windowAtBottom, windowAtTop };
+    function handleAnimationFrame() {
+        let requestId;
+
+        const tick = () => {
+            const changed = watcher.lastXY.join(',') !== getScroll().join(',');
+
+            if (changed) {
+                const evtData = getScrollData();
+
+                emitter.emit(EVENT_TYPE.SCROLLING, evtData);
+
+                Object.keys(watcher.watching).forEach((key) => {
+                    evtData.target = watcher.watching[key].node;
+                    recalculate(watcher.watching[key]);
+                    fireEvents(watcher.watching[key], evtData);
+                });
+            }
+
+            requestId = window.requestAnimationFrame(tick);
+        };
+
+        requestId = window.requestAnimationFrame(tick);
+
+        return requestId;
+    }
+
+    /**
+     * @param {Number|undefined} offset How far to offset.
+     * @return {Boolean} Whether window is scrolled to bottom
+     */
+    function windowAtBottom(offset = 0) {
+        const scrolled = watcher.lastXY[1];
+        const viewHeight = watcher.viewport.h;
+
+        // eslint-disable-next-line no-param-reassign
+        offset = Number.parseInt(offset, 10);
+
+        return scrolled + viewHeight >= getDocumentHeight() - offset;
+    }
+
+    /**
+     * @param {Number|undefined} offset How far to offset.
+     * @return {Boolean} Whether window is scrolled to top
+     */
+    function windowAtTop(offset = 0) {
+        // eslint-disable-next-line no-param-reassign
+        offset = Number.parseInt(offset, 10);
+
+        return watcher.lastXY[1] <= offset;
+    }
+
+    return { initialize, watch, emitter, windowAtBottom, windowAtTop };
 }
