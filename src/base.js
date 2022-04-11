@@ -27,6 +27,67 @@ export default function () {
 
     const emitter = new Mitt();
 
+    function getScrollData() {
+        const xy = getScroll();
+        const scrollingDown = xy[1] > watcher.lastXY[1];
+
+        watcher.lastXY = xy;
+
+        return {
+            scrollX: xy[0],
+            scrollY: xy[1],
+            scrollingDown,
+            scrollingUp: !scrollingDown,
+        };
+    }
+
+    function recalculate(item) {
+        const el = {
+            top: item.dimensions.top + item.offset.top,
+            bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height,
+        };
+
+        const vp = {
+            top: watcher.lastXY[1],
+            bottom: watcher.lastXY[1] + watcher.viewport.h,
+        };
+
+        item.isAboveViewport = el.top < vp.top;
+        item.isBelowViewport = el.bottom > vp.bottom;
+        item.isInViewport = el.top <= vp.bottom && el.bottom > vp.top;
+        item.isFullyInViewport =
+            (el.top >= vp.top && el.bottom <= vp.bottom) ||
+            (item.isAboveViewport && item.isBelowViewport);
+        item.isFullyOut = !item.isInViewport && item.wasInViewport;
+        item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport && !item.isFullyOut;
+    }
+
+    function handleAnimationFrame() {
+        let requestId;
+
+        const tick = () => {
+            const changed = watcher.lastXY.join(',') !== getScroll().join(',');
+
+            if (changed) {
+                const evtData = getScrollData();
+
+                emitter.emit(EVENT_TYPE.SCROLLING, evtData);
+
+                Object.keys(watcher.watching).forEach((key) => {
+                    evtData.target = watcher.watching[key].node;
+                    recalculate(watcher.watching[key]);
+                    fireEvents(watcher.watching[key], evtData);
+                });
+            }
+
+            requestId = window.requestAnimationFrame(tick);
+        };
+
+        requestId = window.requestAnimationFrame(tick);
+
+        return requestId;
+    }
+
     function initialize() {
         handleAnimationFrame();
 
@@ -132,67 +193,6 @@ export default function () {
                 return this;
             },
         };
-    }
-
-    function getScrollData() {
-        const xy = getScroll();
-        const scrollingDown = xy[1] > watcher.lastXY[1];
-
-        watcher.lastXY = xy;
-
-        return {
-            scrollX: xy[0],
-            scrollY: xy[1],
-            scrollingDown,
-            scrollingUp: !scrollingDown,
-        };
-    }
-
-    function recalculate(item) {
-        const el = {
-            top: item.dimensions.top + item.offset.top,
-            bottom: item.dimensions.top + item.offset.bottom + item.dimensions.height,
-        };
-
-        const vp = {
-            top: watcher.lastXY[1],
-            bottom: watcher.lastXY[1] + watcher.viewport.h,
-        };
-
-        item.isAboveViewport = el.top < vp.top;
-        item.isBelowViewport = el.bottom > vp.bottom;
-        item.isInViewport = el.top <= vp.bottom && el.bottom > vp.top;
-        item.isFullyInViewport =
-            (el.top >= vp.top && el.bottom <= vp.bottom) ||
-            (item.isAboveViewport && item.isBelowViewport);
-        item.isFullyOut = !item.isInViewport && item.wasInViewport;
-        item.isPartialOut = item.wasFullyInViewport && !item.isFullyInViewport && !item.isFullyOut;
-    }
-
-    function handleAnimationFrame() {
-        let requestId;
-
-        const tick = () => {
-            const changed = watcher.lastXY.join(',') !== getScroll().join(',');
-
-            if (changed) {
-                const evtData = getScrollData();
-
-                emitter.emit(EVENT_TYPE.SCROLLING, evtData);
-
-                Object.keys(watcher.watching).forEach((key) => {
-                    evtData.target = watcher.watching[key].node;
-                    recalculate(watcher.watching[key]);
-                    fireEvents(watcher.watching[key], evtData);
-                });
-            }
-
-            requestId = window.requestAnimationFrame(tick);
-        };
-
-        requestId = window.requestAnimationFrame(tick);
-
-        return requestId;
     }
 
     /**

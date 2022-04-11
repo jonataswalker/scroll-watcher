@@ -1,3 +1,20 @@
+function classRegex(classname) {
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    return new RegExp(`(^|\\s+) ${classname} (\\s+|$)`, 'u');
+}
+
+/**
+ * @param {Element} element DOM node.
+ * @param {String} classname Classname.
+ * @return {Boolean}
+ */
+export function hasClass(element, classname) {
+    // use native if available
+    return element.classList
+        ? element.classList.contains(classname)
+        : classRegex(classname).test(element.className);
+}
+
 /**
  * @param {Element|Array<Element>} element DOM node or array of nodes.
  * @param {String|Array<String>} classname Class or array of classes.
@@ -51,18 +68,6 @@ export function removeClass(element, classname) {
             }
         }
     }
-}
-
-/**
- * @param {Element} element DOM node.
- * @param {String} classname Classname.
- * @return {Boolean}
- */
-export function hasClass(element, classname) {
-    // use native if available
-    return element.classList
-        ? element.classList.contains(classname)
-        : classRegex(classname).test(element.className);
 }
 
 /**
@@ -125,11 +130,6 @@ export function getOffset(element) {
     const bottom = top + height;
 
     return { width, height, top, bottom, right, left };
-}
-
-function classRegex(classname) {
-    // eslint-disable-next-line security/detect-non-literal-regexp
-    return new RegExp(`(^|\\s+) ${classname} (\\s+|$)`, 'u');
 }
 
 export function isElement(object) {

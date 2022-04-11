@@ -26,7 +26,7 @@
     "scripts": {
         "dev": "npm run build -- watch",
         "build": "node rollup",
-        "lint": "eslint --ext .js .",
+        "lint": "eslint --cache --ext .js .",
         "lint:fix": "npm run lint -- --fix",
         "test": "run-s build test:unit test:e2e",
         "test:e2e": "testcafe chrome test/e2e/*.test.js",
