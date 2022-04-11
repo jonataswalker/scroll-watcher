@@ -8,36 +8,36 @@ import { prettyTimeFromBigint } from './helpers.js';
 import { getInputOptions, getOutputOptions, createOnWarn } from './options.js';
 
 export default function createBundle({ minify, spinners, subscriber }) {
-  return new Promise((resolve, reject) => {
-    const inputOptions = getInputOptions(minify);
-    const outputOptions = getOutputOptions(minify);
-    const start = process.hrtime.bigint();
+    return new Promise((resolve, reject) => {
+        const inputOptions = getInputOptions(minify);
+        const outputOptions = getOutputOptions(minify);
+        const start = process.hrtime.bigint();
 
-    inputOptions.onwarn = createOnWarn(subscriber);
-    spinners.building.start();
+        inputOptions.onwarn = createOnWarn(subscriber);
+        spinners.building.start();
 
-    rollup(inputOptions)
-      .then((bundle) => bundle.generate(outputOptions))
-      .then(({ output: [{ code, message }] }) => {
-        let subscriberMessage;
+        rollup(inputOptions)
+            .then((bundle) => bundle.generate(outputOptions))
+            .then(({ output: [{ code }] }) => {
+                let subscriberMessage;
 
-        const end = process.hrtime.bigint();
-        const size = maxmin(code, code, true);
-        const inputFile = basename(inputOptions.input);
-        const outputFile = basename(outputOptions.file);
-        const duration = prettyTimeFromBigint(start, end);
+                const end = process.hrtime.bigint();
+                const size = maxmin(code, code, true);
+                const inputFile = basename(inputOptions.input);
+                const outputFile = basename(outputOptions.file);
+                const duration = prettyTimeFromBigint(start, end);
 
-        writeFileSync(outputOptions.file, code);
+                writeFileSync(outputOptions.file, code);
 
-        spinners.building.isSpinning && spinners.building.succeed();
-        subscriberMessage = `Compiled ${inputFile} -> ${outputFile} in ${duration}!`;
-        subscriber.next({ status: 'info', message: subscriberMessage });
+                spinners.building.isSpinning && spinners.building.succeed();
+                subscriberMessage = `Compiled ${inputFile} -> ${outputFile} in ${duration}!`;
+                subscriber.next({ status: 'info', message: subscriberMessage });
 
-        subscriberMessage = `Bundle size: ${size.slice(size.indexOf(' → ') + 3)}`;
-        subscriber.next({ status: 'info', message: subscriberMessage });
+                subscriberMessage = `Bundle size: ${size.slice(size.indexOf(' → ') + 3)}`;
+                subscriber.next({ status: 'info', message: subscriberMessage });
 
-        resolve();
-      })
-      .catch((error) => reject(error.message));
-  });
+                resolve();
+            })
+            .catch((error) => reject(error.message));
+    });
 }

@@ -1,8 +1,18 @@
 {
-  "[javascript]": {},
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-  },
+  "editor.rulers": [100, 120],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.validate": ["javascript"]
 }

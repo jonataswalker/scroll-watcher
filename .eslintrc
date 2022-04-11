@@ -1,0 +1,22 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "extends": ["jwalker", "prettier"],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "reportUnusedDisableDirectives": true,
+    "rules": {
+        "default-case": "off",
+        "no-prototype-builtins": "off",
+        "unicorn/prevent-abbreviations": "off",
+        "unicorn/prefer-query-selector": "off",
+        "security/detect-non-literal-fs-filename": "off",
+        "security/detect-object-injection": "off",
+        "sonarjs/no-duplicate-string": "off"
+    }
+}
